@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WealthLens — Portfolio Tracker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14;
+  --surface: #0e1623;
+  --surface2: #141e2e;
+  --surface3: #1a2640;
+  --border: rgba(99,179,237,0.10);
+  --border2: rgba(99,179,237,0.18);
+  --accent: #3ecfcf;
+  --accent2: #4f9cf9;
+  --accent3: #7c6dfa;
+  --green: #22d3a0;
+  --red: #f87171;
+  --gold: #f6c053;
+  --silver: #a8c0d8;
+  --text: #e2eaf5;
+  --text2: #8ba3c0;
+  --text3: #4e6680;
+  --grad: linear-gradient(135deg, #3ecfcf 0%, #4f9cf9 50%, #7c6dfa 100%);
+  --grad2: linear-gradient(135deg, #22d3a0 0%, #3ecfcf 100%);
+  --card-shadow: 0 4px 32px rgba(0,0,0,0.45);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% -10%,rgba(62,207,207,0.06),transparent),radial-gradient(ellipse 60% 50% at 80% 110%,rgba(124,109,250,0.06),transparent);pointer-events:none;z-index:0}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:99px}
+
+/* LAYOUT */
+.app-shell{display:flex;min-height:100vh;position:relative;z-index:1}
+.sidebar{width:200px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .3s}
+.main{margin-left:200px;flex:1;min-height:100vh;display:flex;flex-direction:column;min-width:0;overflow-x:hidden}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.content{padding:20px;flex:1}
+
+/* SIDEBAR */
+.logo{padding:24px 20px 16px;display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:var(--grad);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav{flex:1;padding:8px 12px;display:flex;flex-direction:column;gap:4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:var(--radius-sm);cursor:pointer;color:var(--text2);font-weight:500;transition:all .2s;border:none;background:none;text-align:left;width:100%;font-family:'DM Sans',sans-serif;font-size:13px}
+.nav-item:hover{color:var(--text);background:var(--surface2)}
+.nav-item.active{color:var(--accent);background:rgba(62,207,207,0.10)}
+.nav-item .nav-icon{font-size:17px;width:20px;text-align:center;flex-shrink:0}
+.sidebar-footer{padding:16px 12px;border-top:1px solid var(--border)}
+
+/* TOP BAR */
+.topbar-title{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;color:var(--text)}
+.topbar-actions{display:flex;gap:10px;align-items:center}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;transition:all .2s;white-space:nowrap}
+.btn-grad{background:var(--grad);color:#fff}
+.btn-grad:hover{opacity:.88;transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-danger{background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);color:var(--red)}
+.btn-danger:hover{background:rgba(248,113,113,0.25)}
+.btn-green{background:rgba(34,211,160,0.15);border:1px solid rgba(34,211,160,0.3);color:var(--green)}
+.btn-green:hover{background:rgba(34,211,160,0.25)}
+.btn-icon{padding:8px;font-size:16px}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;transition:border-color .2s}
+.card:hover{border-color:var(--border2)}
+.card-sm{padding:14px}
+.grid{display:grid;gap:16px}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+
+/* STAT CARDS */
+.stat-label{font-size:11.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-bottom:8px}
+.stat-value{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--text);line-height:1.1}
+.stat-value.pos{color:var(--green)}
+.stat-value.neg{color:var(--red)}
+.stat-sub{font-size:12px;color:var(--text2);margin-top:5px;display:flex;align-items:center;gap:5px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.badge-pos{background:rgba(34,211,160,0.15);color:var(--green)}
+.badge-neg{background:rgba(248,113,113,0.15);color:var(--red)}
+.badge-neu{background:rgba(99,179,237,0.1);color:var(--text2)}
+
+/* SECTION HEADERS */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.section-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text)}
+.section-subtitle{font-size:12px;color:var(--text3);margin-top:2px}
+
+/* FORMS */
+.form-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:20px}
+.form-group{display:flex;flex-direction:column;gap:6px;flex:1;min-width:120px}
+.form-group label{font-size:11.5px;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.6px}
+.form-control{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13.5px;outline:none;transition:border-color .2s;width:100%}
+.form-control:focus{border-color:var(--accent);background:var(--surface3)}
+.form-control::placeholder{color:var(--text3)}
+select.form-control{cursor:pointer}
+select.form-control option{background:var(--surface2)}
+
+/* TABLES */
+.table-wrap{overflow-x:auto;border-radius:var(--radius-sm);width:100%}
+table{width:100%;border-collapse:collapse;min-width:0}
+thead tr{background:var(--surface2)}
+th{padding:9px 10px;text-align:left;font-size:10.5px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;border-bottom:1px solid var(--border)}
+td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text);font-size:12.5px}
+tr:last-child td{border-bottom:none}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:rgba(255,255,255,0.025)}
+.td-bold{font-weight:600}
+.td-pos{color:var(--green);font-weight:600}
+.td-neg{color:var(--red);font-weight:600}
+.td-gold{color:var(--gold)}
+.td-silver{color:var(--silver)}
+input.price-input{background:var(--surface3);border:1px solid var(--border);border-radius:6px;padding:4px 6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;width:82px;outline:none;transition:border-color .2s}
+input.price-input:focus{border-color:var(--accent)}
+
+/* SEARCH */
+.search-row{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.search-wrap{position:relative;flex:1;max-width:280px}
+.search-wrap input{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px 8px 36px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:100%;transition:border-color .2s}
+.search-wrap input:focus{border-color:var(--accent)}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:15px}
+
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--surface2);border-radius:var(--radius-sm);padding:4px;width:fit-content;margin-bottom:20px}
+.tab{padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text2);transition:all .2s;border:none;background:none;font-family:'DM Sans',sans-serif}
+.tab.active{background:var(--surface3);color:var(--accent)}
+
+/* CHARTS */
+.chart-wrap{position:relative;height:240px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:28px;width:100%;max-width:420px;box-shadow:0 24px 80px rgba(0,0,0,.6);animation:modalIn .2s ease}
+@keyframes modalIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.modal-title{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:20px;color:var(--text)}
+
+/* TOAST */
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:1000;display:flex;flex-direction:column;gap:10px}
+.toast{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:13px 18px;font-size:13px;color:var(--text);box-shadow:var(--card-shadow);display:flex;align-items:center;gap:10px;animation:toastIn .25s ease;max-width:320px}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+.toast.success{border-color:rgba(34,211,160,0.4)}
+.toast.error{border-color:rgba(248,113,113,0.4)}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:20px 0}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:48px 20px;color:var(--text3)}
+.empty-icon{font-size:36px;margin-bottom:12px}
+.empty-text{font-size:13px}
+
+/* PILL */
+.pill{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600}
+.pill-stock{background:rgba(79,156,249,0.15);color:var(--accent2)}
+.pill-gold{background:rgba(246,192,83,0.15);color:var(--gold)}
+.pill-silver{background:rgba(168,192,216,0.15);color:var(--silver)}
+.pill-mf{background:rgba(124,109,250,0.15);color:var(--accent3)}
+
+/* GAINER CARD */
+.gainer-card{background:linear-gradient(135deg,rgba(34,211,160,0.10),rgba(62,207,207,0.06));border:1px solid rgba(34,211,160,0.2);border-radius:var(--radius);padding:18px}
+.gainer-name{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--green)}
+
+/* ACTIVITY */
+.activity-item{display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)}
+.activity-item:last-child{border-bottom:none}
+.activity-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.activity-dot.buy{background:var(--green)}
+.activity-dot.sell{background:var(--red)}
+.activity-info{flex:1;min-width:0}
+.activity-name{font-weight:500;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.activity-meta{font-size:11.5px;color:var(--text3);margin-top:2px}
+.activity-val{font-weight:600;font-size:13px;text-align:right}
+
+/* HAMBURGER */
+.hamburger{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:4px}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+
+/* GLOBAL PRICE BAR */
+.price-bar{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 18px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.price-bar-label{font-size:11.5px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-right:4px}
+
+/* RESPONSIVE */
+@media(max-width:1200px){
+  .sidebar{width:180px}
+  .main{margin-left:180px}
+  .content{padding:16px}
+}
+@media(max-width:900px){
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .grid-3{grid-template-columns:repeat(2,1fr)}
+  .sidebar{width:160px}
+  .main{margin-left:160px}
+  .nav-item{font-size:12px;padding:9px 10px}
+}
+@media(max-width:700px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:none}
+  .sidebar-overlay.open{display:block}
+  .main{margin-left:0}
+  .hamburger{display:block}
+  .grid-4,.grid-3,.grid-2{grid-template-columns:1fr}
+  .content{padding:12px}
+  .topbar{padding:10px 14px}
+  .form-row{flex-direction:column}
+  .form-group{min-width:0}
+}
+
+/* PAGE VISIBILITY */
+.page{display:none}
+.page.active{display:block}
+
+/* MINI SUMMARY CARDS */
+.mini-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.mini-card-header{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+.mini-card-val{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--text)}
+
+/* AUTOCOMPLETE */
+.autocomplete-wrap{position:relative}
+.autocomplete-list{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);z-index:200;max-height:220px;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.autocomplete-item{padding:10px 14px;cursor:pointer;display:flex;flex-direction:column;gap:2px;border-bottom:1px solid var(--border);transition:background .15s}
+.autocomplete-item:last-child{border-bottom:none}
+.autocomplete-item:hover,.autocomplete-item.kbd-active{background:var(--surface3)}
+.ac-name{font-weight:600;font-size:13px;color:var(--text)}
+.ac-meta{font-size:11px;color:var(--text3)}
+.ac-ticker{font-size:11px;color:var(--accent);font-weight:600;margin-top:1px}
+.ac-spinner{padding:12px 14px;color:var(--text3);font-size:12px;display:flex;align-items:center;gap:8px}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* LIVE PRICE BADGE */
+.live-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;background:rgba(34,211,160,0.12);color:var(--green)}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:livepulse 1.5s ease-in-out infinite;flex-shrink:0}
+@keyframes livepulse{0%,100%{opacity:1}50%{opacity:.25}}
+.stale-badge{background:rgba(246,192,83,0.12);color:var(--gold)}
+.err-badge{background:rgba(248,113,113,0.12);color:var(--red)}
+.fetching-badge{background:rgba(79,156,249,0.12);color:var(--accent2)}
+
+/* CHART PERIOD BUTTONS */
+.chart-period-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s}
+.chart-period-btn:hover{color:var(--text);border-color:var(--border2)}
+.chart-period-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-icon">📈</div>
+      <span class="logo-text">WealthLens</span>
+    </div>
+    <nav class="nav">
+      <button class="nav-item active" onclick="navigate('dashboard')">
+        <span class="nav-icon">🏠</span> Dashboard
+      </button>
+      <button class="nav-item" onclick="navigate('stocks')">
+        <span class="nav-icon">📊</span> Stocks
+      </button>
+      <button class="nav-item" onclick="navigate('metals')">
+        <span class="nav-icon">🪙</span> Gold & Silver
+      </button>
+      <button class="nav-item" onclick="navigate('mf')">
+        <span class="nav-icon">💼</span> Mutual Funds
+      </button>
+      <button class="nav-item" onclick="navigate('realized')">
+        <span class="nav-icon">💰</span> Realized P&L
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <div style="font-size:11px;color:var(--text3);text-align:center">WealthLens v1.0 · Offline</div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" onclick="openSidebar()">☰</button>
+        <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-outline btn-sm" onclick="importData()">⬆ Import</button>
+        <button class="btn btn-outline btn-sm" onclick="exportData()">⬇ Export</button>
+        <button class="btn btn-danger btn-sm" onclick="resetData()">🗑 Reset</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD PAGE -->
+      <div class="page active" id="page-dashboard">
+        <div class="grid grid-4" style="margin-bottom:16px">
+          <div class="card card-sm">
+            <div class="stat-label">Total Invested</div>
+            <div class="stat-value" id="d-invested">₹0</div>
+          </div>
+          <div class="card card-sm">
+            <div class="stat-label">Current Value</div>
+            <div class="stat-value" id="d-current">₹0</div>
+          </div>
+          <div class="card card-sm">
+            <div class="stat-label">Total P&L</div>
+            <div class="stat-value" id="d-pnl">₹0</div>
+            <div class="stat-sub" id="d-pnl-sub"></div>
+          </div>
+          <div class="card card-sm">
+            <div class="stat-label">Total Return</div>
+            <div class="stat-value" id="d-ret">0%</div>
+          </div>
+        </div>
+
+        <div class="grid grid-4" style="margin-bottom:20px">
+          <div class="mini-card">
+            <div class="mini-card-header"><span>📊</span> Stocks</div>
+            <div class="mini-card-val" id="d-stocks-val">₹0</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">Invested: <span id="d-stocks-inv">₹0</span></div>
+            <div class="stat-sub" id="d-stocks-pnl" style="font-size:11px;margin-top:2px"></div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-card-header"><span>💼</span> Mutual Funds</div>
+            <div class="mini-card-val" id="d-mf-val">₹0</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">Invested: <span id="d-mf-inv">₹0</span></div>
+            <div class="stat-sub" id="d-mf-pnl" style="font-size:11px;margin-top:2px"></div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-card-header"><span style="color:var(--gold)">●</span> Gold</div>
+            <div class="mini-card-val" id="d-gold-val">₹0</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">Invested: <span id="d-gold-inv">₹0</span> · <span style="color:var(--gold)" id="d-gold-grams">0g</span></div>
+            <div class="stat-sub" id="d-gold-pnl" style="font-size:11px;margin-top:2px"></div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-card-header"><span style="color:var(--silver)">●</span> Silver</div>
+            <div class="mini-card-val" id="d-silver-val">₹0</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">Invested: <span id="d-silver-inv">₹0</span> · <span style="color:var(--silver)" id="d-silver-grams">0g</span></div>
+            <div class="stat-sub" id="d-silver-pnl" style="font-size:11px;margin-top:2px"></div>
+          </div>
+        </div>
+
+        <div class="grid grid-2" style="margin-bottom:20px">
+          <div class="card">
+            <div class="section-header"><div class="section-title">Asset Allocation</div></div>
+            <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
+          </div>
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+              <div class="section-title">Portfolio Growth</div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap" id="chartPeriodBtns">
+                <button class="chart-period-btn active" onclick="setChartPeriod('1M',this)">1M</button>
+                <button class="chart-period-btn" onclick="setChartPeriod('3M',this)">3M</button>
+                <button class="chart-period-btn" onclick="setChartPeriod('6M',this)">6M</button>
+                <button class="chart-period-btn" onclick="setChartPeriod('1Y',this)">1Y</button>
+                <button class="chart-period-btn" onclick="setChartPeriod('3Y',this)">3Y</button>
+                <button class="chart-period-btn" onclick="setChartPeriod('5Y',this)">5Y</button>
+                <button class="chart-period-btn" onclick="setChartPeriod('ALL',this)">ALL</button>
+              </div>
+            </div>
+            <!-- Chart summary stats -->
+            <div style="display:flex;gap:16px;margin-bottom:10px;flex-wrap:wrap" id="chartStats"></div>
+            <div class="chart-wrap" style="height:210px"><canvas id="lineChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="section-header"><div class="section-title">🏆 Top Gainer</div></div>
+            <div id="topGainerContent">
+              <div class="empty"><div class="empty-icon">📭</div><div class="empty-text">No positions yet</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-header"><div class="section-title">🕒 Recent Activity</div></div>
+            <div id="recentActivity">
+              <div class="empty"><div class="empty-icon">📭</div><div class="empty-text">No activity yet</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STOCKS PAGE -->
+      <div class="page" id="page-stocks">
+        <div class="card" style="margin-bottom:16px">
+          <div class="section-header"><div class="section-title">Add / Update Stock</div></div>
+          <div class="form-row">
+            <div class="form-group autocomplete-wrap" style="min-width:200px">
+              <label>Stock Name / Search</label>
+              <input type="text" class="form-control" id="s-name" placeholder="Type e.g. Reliance, TCS..." autocomplete="off"
+                oninput="onStockSearchInput()" onkeydown="onStockSearchKey(event)">
+              <div class="autocomplete-list" id="acList" style="display:none"></div>
+            </div>
+            <div class="form-group" style="max-width:140px">
+              <label>NSE/BSE Ticker</label>
+              <input type="text" class="form-control" id="s-ticker" placeholder="Auto-filled" style="color:var(--accent)">
+            </div>
+            <div class="form-group" style="max-width:100px">
+              <label>Quantity</label>
+              <input type="number" class="form-control" id="s-qty" placeholder="100" min="0">
+            </div>
+            <div class="form-group" style="max-width:130px">
+              <label>Buy Price (₹)</label>
+              <input type="number" class="form-control" id="s-price" placeholder="2500.00" min="0">
+            </div>
+            <button class="btn btn-grad" onclick="addStock()">＋ Add</button>
+          </div>
+          <div style="font-size:11.5px;color:var(--text3)">💡 Type a company name to search — ticker is auto-filled. You can also type the NSE ticker directly (e.g. RELIANCE, TCS, INFY)</div>
+        </div>
+
+        <div class="card">
+          <div class="search-row" style="flex-wrap:wrap;gap:10px">
+            <div class="search-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" placeholder="Search holdings..." oninput="renderStocksTable()" id="stockSearch">
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;margin-left:auto;flex-wrap:wrap">
+              <div id="liveStatus"></div>
+              <button class="btn btn-outline btn-sm" onclick="fetchAllPrices()" id="refreshBtn">⟳ Refresh Prices</button>
+              <div style="font-size:12px;color:var(--text3)" id="stocksCount"></div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="stocksTable">
+              <thead>
+                <tr>
+                  <th>Stock / Ticker</th><th>Qty</th><th>Avg Buy</th><th>Invested</th>
+                  <th>Live Price</th><th>Curr Value</th>
+                  <th>P&L (₹)</th><th>P&L %</th><th>Day Chg</th><th>Act.</th>
+                </tr>
+              </thead>
+              <tbody id="stocksTbody"></tbody>
+            </table>
+          </div>
+          <div id="stocksEmpty" class="empty" style="display:none"><div class="empty-icon">📊</div><div class="empty-text">No stocks added yet</div></div>
+          <div style="font-size:11px;color:var(--text3);margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">
+            📡 Prices via Yahoo Finance (NSE · BSE) · Tries 4 proxy servers automatically · If all fail, prices can still be entered manually · Market hours: 9:15 AM – 3:30 PM IST
+          </div>
+        </div>
+      </div>
+
+      <!-- METALS PAGE (consolidated sell) -->
+      <div class="page" id="page-metals">
+        <div class="price-bar">
+          <span class="price-bar-label">Gold Price (₹/g)</span>
+          <input type="number" class="form-control" id="goldPrice" style="width:130px" placeholder="7200" oninput="saveGlobalPrices();renderMetalsTable()">
+          <span class="price-bar-label" style="margin-left:12px">Silver Price (₹/g)</span>
+          <input type="number" class="form-control" id="silverPrice" style="width:130px" placeholder="95" oninput="saveGlobalPrices();renderMetalsTable()">
+          <div style="margin-left:auto;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-green btn-sm" onclick="openSellMetalConsolidated('Gold')">🪙 Sell Gold</button>
+            <button class="btn btn-green btn-sm" onclick="openSellMetalConsolidated('Silver')">🥈 Sell Silver</button>
+          </div>
+        </div>
+
+        <!-- Metal summary strip -->
+        <div class="grid grid-2" style="margin-bottom:16px">
+          <div class="card card-sm">
+            <div class="stat-label" style="color:var(--gold)">🪙 Gold Holdings</div>
+            <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:6px">
+              <div><div style="font-size:11px;color:var(--text3)">Total Grams</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px;color:var(--gold)" id="goldTotalGrams">—</div></div>
+              <div><div style="font-size:11px;color:var(--text3)">Avg Buy Price</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px" id="goldAvgPrice">—</div></div>
+              <div><div style="font-size:11px;color:var(--text3)">Current Value</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px" id="goldCurrValue">—</div></div>
+              <div><div style="font-size:11px;color:var(--text3)">P&L</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px" id="goldPnl">—</div></div>
+            </div>
+          </div>
+          <div class="card card-sm">
+            <div class="stat-label" style="color:var(--silver)">🥈 Silver Holdings</div>
+            <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:6px">
+              <div><div style="font-size:11px;color:var(--text3)">Total Grams</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px;color:var(--silver)" id="silverTotalGrams">—</div></div>
+              <div><div style="font-size:11px;color:var(--text3)">Avg Buy Price</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px" id="silverAvgPrice">—</div></div>
+              <div><div style="font-size:11px;color:var(--text3)">Current Value</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px" id="silverCurrValue">—</div></div>
+              <div><div style="font-size:11px;color:var(--text3)">P&L</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px" id="silverPnl">—</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="section-header"><div class="section-title">Add Metal Purchase</div></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Metal</label>
+              <select class="form-control" id="m-type">
+                <option value="Gold">Gold</option>
+                <option value="Silver">Silver</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Grams Bought</label>
+              <input type="number" class="form-control" id="m-grams" placeholder="e.g. 2.5" step="0.000001" min="0" oninput="calcMetalAmount()">
+            </div>
+            <div class="form-group">
+              <label>Buy Price (₹/g)</label>
+              <input type="number" class="form-control" id="m-buyprice" placeholder="e.g. 7200" min="0" oninput="calcMetalAmount()">
+            </div>
+            <div class="form-group">
+              <label>Date</label>
+              <input type="date" class="form-control" id="m-date">
+            </div>
+            <button class="btn btn-grad" onclick="addMetal()">＋ Add Entry</button>
+          </div>
+          <div id="metalAmountPreview" style="font-size:13px;color:var(--text2);margin-top:2px;min-height:20px"></div>
+        </div>
+
+        <div class="card">
+          <div class="search-row">
+            <div class="search-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" placeholder="Filter metals..." oninput="renderMetalsTable()" id="metalSearch">
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="metalsTable">
+              <thead>
+                <tr>
+                  <th>Date</th><th>Type</th><th>Grams</th><th>Avg Price/g</th>
+                  <th>Invested</th><th>Curr Price</th><th>Curr Value</th>
+                  <th>P&L (₹)</th><th>P&L %</th><th>Delete</th>
+                </tr>
+              </thead>
+              <tbody id="metalsTbody"></tbody>
+            </table>
+          </div>
+          <div id="metalsEmpty" class="empty" style="display:none"><div class="empty-icon">🪙</div><div class="empty-text">No metal entries yet</div></div>
+        </div>
+      </div>
+
+      <!-- MUTUAL FUNDS PAGE -->
+      <div class="page" id="page-mf">
+        <div class="card" style="margin-bottom:16px">
+          <div class="section-header"><div class="section-title">Add MF Entry</div></div>
+          <div class="form-row">
+            <div class="form-group" style="min-width:200px">
+              <label>Scheme Name</label>
+              <input type="text" class="form-control" id="mf-name" placeholder="e.g. Mirae Asset Flexi Cap">
+            </div>
+            <div class="form-group">
+              <label>Date</label>
+              <input type="date" class="form-control" id="mf-date">
+            </div>
+            <div class="form-group">
+              <label>Units</label>
+              <input type="number" class="form-control" id="mf-units" placeholder="50.123" step="0.001" min="0">
+            </div>
+            <div class="form-group">
+              <label>Buy NAV (₹)</label>
+              <input type="number" class="form-control" id="mf-nav" placeholder="120.50" min="0">
+            </div>
+            <button class="btn btn-grad" onclick="addMF()">＋ Add Entry</button>
+          </div>
+        </div>
+
+        <!-- Scheme summary cards -->
+        <div id="mfSchemeSummary" style="margin-bottom:16px"></div>
+
+        <div class="card">
+          <div class="section-header">
+            <div><div class="section-title">All Transactions</div><div class="section-subtitle">Individual SIP / Lump-sum entries</div></div>
+          </div>
+          <div class="search-row">
+            <div class="search-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" placeholder="Search funds..." oninput="renderMFTable()" id="mfSearch">
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="mfTable">
+              <thead>
+                <tr>
+                  <th>Date</th><th>Scheme</th><th>Units</th><th>Buy NAV</th>
+                  <th>Invested</th><th>Curr NAV</th><th>Curr Value</th>
+                  <th>P&L (₹)</th><th>P&L %</th><th>Delete</th>
+                </tr>
+              </thead>
+              <tbody id="mfTbody"></tbody>
+            </table>
+          </div>
+          <div id="mfEmpty" class="empty" style="display:none"><div class="empty-icon">💼</div><div class="empty-text">No mutual fund entries yet</div></div>
+        </div>
+      </div>
+
+      <!-- REALIZED P&L PAGE -->
+      <div class="page" id="page-realized">
+        <div class="grid grid-3" style="margin-bottom:20px">
+          <div class="card card-sm">
+            <div class="stat-label">Total Realized P&L</div>
+            <div class="stat-value" id="r-total">₹0</div>
+          </div>
+          <div class="card card-sm">
+            <div class="stat-label">Total Gains</div>
+            <div class="stat-value pos" id="r-gains">₹0</div>
+          </div>
+          <div class="card card-sm">
+            <div class="stat-label">Total Losses</div>
+            <div class="stat-value neg" id="r-losses">₹0</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-header"><div class="section-title">Realized Transactions</div></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Date</th><th>Asset</th><th>Type</th><th>Qty/Units/Grams</th><th>Buy Value</th><th>Sell Value</th><th>P&L</th></tr>
+              </thead>
+              <tbody id="realizedTbody"></tbody>
+            </table>
+          </div>
+          <div id="realizedEmpty" class="empty" style="display:none"><div class="empty-icon">💰</div><div class="empty-text">No realized trades yet</div></div>
+        </div>
+      </div>
+
+    </div><!-- end content -->
+  </main>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- SELL STOCK MODAL -->
+<div class="modal-overlay" id="sellStockModal">
+  <div class="modal">
+    <div class="modal-title">Sell Stock — <span id="sellStockName"></span></div>
+    <div class="form-row" style="flex-direction:column;gap:14px">
+      <div class="form-group" style="min-width:0">
+        <label>Quantity to Sell (Available: <span id="sellStockAvail"></span>)</label>
+        <input type="number" class="form-control" id="sellStockQty" placeholder="0">
+      </div>
+      <div class="form-group" style="min-width:0">
+        <label>Sell Price (₹)</label>
+        <input type="number" class="form-control" id="sellStockPrice" placeholder="0">
+      </div>
+      <div class="form-group" style="min-width:0">
+        <label>Date</label>
+        <input type="date" class="form-control" id="sellStockDate">
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px">
+      <button class="btn btn-grad" onclick="confirmSellStock()">Confirm Sell</button>
+      <button class="btn btn-outline" onclick="closeModal('sellStockModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- SELL METAL MODAL (consolidated) -->
+<div class="modal-overlay" id="sellMetalModal">
+  <div class="modal">
+    <div class="modal-title">Sell <span id="sellMetalType"></span></div>
+    <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:14px;margin-bottom:18px;display:flex;gap:20px;flex-wrap:wrap">
+      <div><div style="font-size:11px;color:var(--text3)">Total Holdings</div><div style="font-weight:700;color:var(--accent)" id="sellMetalTotalGrams">—</div></div>
+      <div><div style="font-size:11px;color:var(--text3)">Weighted Avg Price</div><div style="font-weight:700" id="sellMetalAvgPriceDisplay">—</div></div>
+      <div><div style="font-size:11px;color:var(--text3)">Current Price</div><div style="font-weight:700" id="sellMetalCurrPriceDisplay">—</div></div>
+    </div>
+    <div class="form-row" style="flex-direction:column;gap:14px">
+      <div class="form-group" style="min-width:0">
+        <label>Grams to Sell (Max: <span id="sellMetalAvail"></span>g)</label>
+        <input type="number" class="form-control" id="sellMetalGrams" placeholder="0" step="0.000001" oninput="previewMetalSell()">
+      </div>
+      <div class="form-group" style="min-width:0">
+        <label>Sell Price (₹/g)</label>
+        <input type="number" class="form-control" id="sellMetalPrice" placeholder="0" oninput="previewMetalSell()">
+      </div>
+      <div class="form-group" style="min-width:0">
+        <label>Date</label>
+        <input type="date" class="form-control" id="sellMetalDate">
+      </div>
+    </div>
+    <div id="metalSellPreview" style="display:none;background:var(--surface2);border-radius:var(--radius-sm);padding:12px;margin-top:12px;font-size:13px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:var(--text3)">Sell Value</span><span id="metalSellValue" style="font-weight:600"></span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">Estimated P&L</span><span id="metalSellPnl" style="font-weight:700"></span></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px">
+      <button class="btn btn-grad" onclick="confirmSellMetalConsolidated()">Confirm Sell</button>
+      <button class="btn btn-outline" onclick="closeModal('sellMetalModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- SELL MF MODAL (scheme-level consolidated) -->
+<div class="modal-overlay" id="sellMFModal">
+  <div class="modal">
+    <div class="modal-title">Sell MF — <span id="sellMFName"></span></div>
+    <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:14px;margin-bottom:18px;display:flex;gap:20px;flex-wrap:wrap">
+      <div><div style="font-size:11px;color:var(--text3)">Total Units</div><div style="font-weight:700;color:var(--accent3)" id="sellMFTotalUnits">—</div></div>
+      <div><div style="font-size:11px;color:var(--text3)">Weighted Avg NAV</div><div style="font-weight:700" id="sellMFAvgNavDisplay">—</div></div>
+      <div><div style="font-size:11px;color:var(--text3)">Current NAV</div><div style="font-weight:700" id="sellMFCurrNavDisplay">—</div></div>
+    </div>
+    <div class="form-row" style="flex-direction:column;gap:14px">
+      <div class="form-group" style="min-width:0">
+        <label>Units to Sell (Max: <span id="sellMFAvail"></span>)</label>
+        <input type="number" class="form-control" id="sellMFUnits" placeholder="0" step="0.001" oninput="previewMFSell()">
+      </div>
+      <div class="form-group" style="min-width:0">
+        <label>Sell NAV (₹)</label>
+        <input type="number" class="form-control" id="sellMFNav" placeholder="0" oninput="previewMFSell()">
+      </div>
+      <div class="form-group" style="min-width:0">
+        <label>Date</label>
+        <input type="date" class="form-control" id="sellMFDate">
+      </div>
+    </div>
+    <div id="mfSellPreview" style="display:none;background:var(--surface2);border-radius:var(--radius-sm);padding:12px;margin-top:12px;font-size:13px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:var(--text3)">Sell Value</span><span id="mfSellValue" style="font-weight:600"></span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">Estimated P&L</span><span id="mfSellPnl" style="font-weight:700"></span></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px">
+      <button class="btn btn-grad" onclick="confirmSellMFConsolidated()">Confirm Sell</button>
+      <button class="btn btn-outline" onclick="closeModal('sellMFModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV EDIT MODAL -->
+<div class="modal-overlay" id="navModal">
+  <div class="modal">
+    <div class="modal-title">Update NAV — <span id="navModalName"></span></div>
+    <div class="form-group" style="min-width:0;margin-bottom:20px">
+      <label>Current NAV (₹)</label>
+      <input type="number" class="form-control" id="navModalValue" placeholder="0">
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-grad" onclick="confirmUpdateNAV()">Update NAV</button>
+      <button class="btn btn-outline" onclick="closeModal('navModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="importInput" accept=".json" style="display:none" onchange="handleImport(event)">
+
+<script>
+// ===================== STATE =====================
+let db = {
+  stocks: [],      // {name, qty, avgPrice, currentPrice}
+  metals: [],      // {id, type, grams, avgPricePerGram, invested, date}
+  mf: [],          // {id, scheme, date, units, buyNav, currentNav}
+  realized: [],    // {date, asset, type, qty, buyValue, sellValue, pnl}
+  globalPrices: { gold: 0, silver: 0 },
+  mfNavs: {},      // scheme -> currentNav
+  activity: []     // last N events
+};
+let sellStockTarget = null;
+let sellMetalTarget = null;
+let sellMFTarget = null;
+let navTarget = null;
+let pieChart = null, lineChart = null;
+
+// ===================== PERSIST =====================
+function save() {
+  localStorage.setItem('wealthlens', JSON.stringify(db));
+}
+function load() {
+  const raw = localStorage.getItem('wealthlens');
+  if (raw) {
+    try { db = JSON.parse(raw); } catch(e) {}
+  }
+  if (!db.globalPrices) db.globalPrices = { gold: 0, silver: 0 };
+  if (!db.mfNavs) db.mfNavs = {};
+  if (!db.activity) db.activity = [];
+  if (!db.snapshots) db.snapshots = [];
+}
+
+// ===================== NAV =====================
+const titles = { dashboard: 'Dashboard', stocks: 'Stocks', metals: 'Gold & Silver', mf: 'Mutual Funds', realized: 'Realized P&L' };
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  const items = document.querySelectorAll('.nav-item');
+  const idx = ['dashboard','stocks','metals','mf','realized'].indexOf(page);
+  if (idx >= 0) items[idx].classList.add('active');
+  document.getElementById('topbarTitle').textContent = titles[page] || page;
+  closeSidebar();
+  if (page === 'dashboard') refreshDashboard();
+  if (page === 'stocks') renderStocksTable();
+  if (page === 'metals') { restoreGlobalPrices(); renderMetalsTable(); }
+  if (page === 'mf') renderMFTable();
+  if (page === 'realized') renderRealized();
+}
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+// ===================== MODAL =====================
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ===================== TOAST =====================
+function toast(msg, type = 'success') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span>${type === 'success' ? '✅' : '❌'}</span> ${msg}`;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+// ===================== FORMAT =====================
+const fmt = n => '₹' + Number(n).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmtN = (n, d = 2) => Number(n).toLocaleString('en-IN', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmtPct = n => (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+const pnlCls = n => n >= 0 ? 'td-pos' : 'td-neg';
+const pnlBadgeCls = n => n >= 0 ? 'badge-pos' : 'badge-neg';
+const today = () => new Date().toISOString().split('T')[0];
+
+// ===================== STOCKS — AUTOCOMPLETE =====================
+let acTimer = null, acResults = [], acIndex = -1;
+
+function onStockSearchInput() {
+  const q = document.getElementById('s-name').value.trim();
+  clearTimeout(acTimer);
+  hideAC();
+  if (q.length < 2) return;
+  acTimer = setTimeout(() => searchTicker(q), 400);
+}
+
+async function searchTicker(q) {
+  const list = document.getElementById('acList');
+  list.style.display = '';
+  list.innerHTML = `<div class="ac-spinner"><span class="spin"></span>Searching…</div>`;
+  try {
+    const url = YF_SEARCH_URL + encodeURIComponent(q) + '&lang=en-IN&region=IN&quotesCount=8&newsCount=0&enableFuzzyQuery=true';
+    const data = await fetchWithFallback(url);
+    const quotes = (data?.quotes || []).filter(q =>
+      q.quoteType === 'EQUITY' && (q.exchange === 'NSI' || q.exchange === 'BSE' || q.symbol?.endsWith('.NS') || q.symbol?.endsWith('.BO'))
+    ).slice(0, 8);
+    acResults = quotes;
+    acIndex = -1;
+    if (!quotes.length) {
+      list.innerHTML = `<div class="ac-spinner" style="color:var(--text3)">No Indian stocks found. Try NSE ticker directly (e.g. RELIANCE.NS)</div>`;
+      return;
+    }
+    list.innerHTML = quotes.map((q, i) => {
+      const exchange = q.symbol?.endsWith('.BO') ? 'BSE' : 'NSE';
+      return `<div class="autocomplete-item" onclick="selectTicker(${i})">
+        <span class="ac-name">${q.longname || q.shortname || q.symbol}</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="ac-ticker">${q.symbol}</span>
+          <span class="ac-meta">${exchange} · ${q.sector || q.industry || ''}</span>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    list.innerHTML = `<div class="ac-spinner" style="color:var(--red)">Search unavailable — type the ticker directly (e.g. TCS.NS)</div>`;
+  }
+}
+
+function onStockSearchKey(e) {
+  const list = document.getElementById('acList');
+  if (list.style.display === 'none') return;
+  const items = list.querySelectorAll('.autocomplete-item');
+  if (e.key === 'ArrowDown') { acIndex = Math.min(acIndex + 1, items.length - 1); highlightAC(items); e.preventDefault(); }
+  else if (e.key === 'ArrowUp') { acIndex = Math.max(acIndex - 1, 0); highlightAC(items); e.preventDefault(); }
+  else if (e.key === 'Enter' && acIndex >= 0) { selectTicker(acIndex); e.preventDefault(); }
+  else if (e.key === 'Escape') hideAC();
+}
+function highlightAC(items) {
+  items.forEach((el, i) => el.classList.toggle('kbd-active', i === acIndex));
+}
+function selectTicker(i) {
+  const q = acResults[i];
+  if (!q) return;
+  document.getElementById('s-name').value = q.longname || q.shortname || q.symbol;
+  document.getElementById('s-ticker').value = q.symbol;
+  hideAC();
+  document.getElementById('s-qty').focus();
+}
+function hideAC() {
+  document.getElementById('acList').style.display = 'none';
+  acResults = []; acIndex = -1;
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.autocomplete-wrap')) hideAC();
+});
+
+// ===================== STOCKS — ADD =====================
+async function addStock() {
+  const name = document.getElementById('s-name').value.trim();
+  let ticker = document.getElementById('s-ticker').value.trim().toUpperCase();
+  const qty = parseFloat(document.getElementById('s-qty').value);
+  const price = parseFloat(document.getElementById('s-price').value);
+  if (!name) { toast('Enter a stock name', 'error'); return; }
+  if (isNaN(qty) || qty <= 0) { toast('Enter valid quantity', 'error'); return; }
+  if (isNaN(price) || price <= 0) { toast('Enter valid buy price', 'error'); return; }
+
+  // If no ticker auto-filled, try treating the name as a raw NSE ticker
+  if (!ticker) {
+    const raw = name.toUpperCase().replace(/\s+/g, '');
+    ticker = raw.includes('.') ? raw : raw + '.NS';
+  }
+  // Ensure exchange suffix
+  if (!ticker.includes('.')) ticker = ticker + '.NS';
+
+  const displayName = name.toUpperCase();
+  const existing = db.stocks.find(s => s.ticker === ticker || s.name === displayName);
+  if (existing) {
+    const totalQty = existing.qty + qty;
+    existing.avgPrice = (existing.qty * existing.avgPrice + qty * price) / totalQty;
+    existing.qty = totalQty;
+    existing.ticker = ticker;
+    existing.name = displayName;
+  } else {
+    db.stocks.push({ name: displayName, ticker, qty, avgPrice: price, currentPrice: price, prevClose: null, lastFetched: null });
+  }
+  addActivity('buy', `${displayName} × ${qty}`, 'Stock', qty * price);
+  save(); renderStocksTable(); refreshDashboard();
+  document.getElementById('s-name').value = '';
+  document.getElementById('s-ticker').value = '';
+  document.getElementById('s-qty').value = '';
+  document.getElementById('s-price').value = '';
+  toast(`${displayName} added — fetching live price…`);
+  // fetch price for this stock immediately
+  fetchPriceForStock(db.stocks.find(s => s.ticker === ticker));
+}
+
+// ===================== STOCKS — LIVE PRICE =====================
+let fetchingPrices = false;
+
+// Multiple CORS proxies tried in order — first one that works wins
+const PROXIES = [
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://thingproxy.freeboard.io/fetch/${url}`,
+  url => `https://cors-anywhere.herokuapp.com/${url}`,
+];
+const YF_QUOTE_BASE = 'https://query1.finance.yahoo.com/v8/finance/chart/';
+const YF_QUOTE_V7   = 'https://query1.finance.yahoo.com/v7/finance/quote?symbols=';
+const YF_SEARCH_URL = 'https://query1.finance.yahoo.com/v1/finance/search?q=';
+
+// Try fetching through each proxy in turn, return first successful JSON
+async function fetchWithFallback(targetUrl) {
+  for (const makeProxy of PROXIES) {
+    try {
+      const proxyUrl = makeProxy(targetUrl);
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(6000) });
+      if (!res.ok) continue;
+      const data = await res.json();
+      return data;
+    } catch(e) { continue; }
+  }
+  return null;
+}
+
+async function fetchPriceForStock(s) {
+  if (!s || !s.ticker) return false;
+  try {
+    // Try v8 chart endpoint first (has prevClose)
+    const chartUrl = YF_QUOTE_BASE + s.ticker + '?interval=1d&range=2d&includePrePost=false';
+    const data = await fetchWithFallback(chartUrl);
+    const meta = data?.chart?.result?.[0]?.meta;
+    if (meta?.regularMarketPrice) {
+      s.currentPrice = meta.regularMarketPrice;
+      s.prevClose = meta.chartPreviousClose || meta.previousClose || meta.regularMarketPreviousClose || null;
+      s.lastFetched = new Date().toISOString();
+      return true;
+    }
+    // Fallback: try v7 quote endpoint
+    const quoteUrl = YF_QUOTE_V7 + s.ticker;
+    const qdata = await fetchWithFallback(quoteUrl);
+    const q = qdata?.quoteResponse?.result?.[0];
+    if (q?.regularMarketPrice) {
+      s.currentPrice = q.regularMarketPrice;
+      s.prevClose = q.regularMarketPreviousClose || q.fiftyDayAverage || null;
+      s.lastFetched = new Date().toISOString();
+      return true;
+    }
+  } catch(e) {}
+  return false;
+}
+
+async function fetchAllPrices() {
+  if (!db.stocks.length) { toast('No stocks to fetch', 'error'); return; }
+  if (fetchingPrices) return;
+  fetchingPrices = true;
+  const btn = document.getElementById('refreshBtn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Fetching…'; }
+  setLiveStatus('fetching');
+
+  let ok = 0, fail = 0;
+  // Batch fetch: try up to 5 at once to speed up
+  const chunks = [];
+  for (let i = 0; i < db.stocks.length; i += 4) chunks.push(db.stocks.slice(i, i + 4));
+  for (const chunk of chunks) {
+    const results = await Promise.all(chunk.map(s => fetchPriceForStock(s)));
+    results.forEach(r => r ? ok++ : fail++);
+    if (chunks.indexOf(chunk) < chunks.length - 1) await new Promise(r => setTimeout(r, 200));
+  }
+
+  save(); renderStocksTable(); refreshDashboard();
+  fetchingPrices = false;
+  if (btn) { btn.disabled = false; btn.innerHTML = '⟳ Refresh Prices'; }
+
+  if (ok === 0 && fail > 0) {
+    setLiveStatus('error');
+    toast('Could not fetch prices — check internet connection or try a VPN', 'error');
+  } else if (fail > 0) {
+    setLiveStatus('partial');
+    toast(`${ok} updated · ${fail} failed (check ticker format e.g. RELIANCE.NS)`);
+  } else {
+    setLiveStatus('live');
+    toast(`All ${ok} prices updated ✓`);
+  }
+}
+
+function setLiveStatus(state) {
+  const el = document.getElementById('liveStatus');
+  if (!el) return;
+  if (state === 'live') el.innerHTML = `<span class="live-badge"><span class="live-dot"></span>Live</span>`;
+  else if (state === 'fetching') el.innerHTML = `<span class="live-badge fetching-badge"><span class="spin"></span> Fetching…</span>`;
+  else if (state === 'partial') el.innerHTML = `<span class="live-badge stale-badge">⚠ Partial</span>`;
+  else if (state === 'error') el.innerHTML = `<span class="live-badge err-badge">✕ Offline</span>`;
+  else el.innerHTML = '';
+}
+
+// ===================== STOCKS — TABLE =====================
+function renderStocksTable() {
+  const q = (document.getElementById('stockSearch').value || '').toLowerCase();
+  let rows = db.stocks.filter(s => s.name.toLowerCase().includes(q) || (s.ticker||'').toLowerCase().includes(q));
+  rows = rows.sort((a, b) => (b.currentPrice * b.qty) - (a.currentPrice * a.qty));
+  const tbody = document.getElementById('stocksTbody');
+  document.getElementById('stocksEmpty').style.display = rows.length ? 'none' : '';
+  document.getElementById('stocksTable').style.display = rows.length ? '' : 'none';
+  document.getElementById('stocksCount').textContent = rows.length + ' holdings';
+
+  // Show last fetched time
+  const anyFetched = db.stocks.find(s => s.lastFetched);
+  if (anyFetched) {
+    const t = new Date(anyFetched.lastFetched);
+    const timeStr = t.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+    setLiveStatus('live');
+    const liveEl = document.getElementById('liveStatus');
+    if (liveEl) liveEl.title = 'Last updated: ' + timeStr;
+  }
+
+  tbody.innerHTML = rows.map(s => {
+    const invested = s.qty * s.avgPrice;
+    const currVal = s.qty * s.currentPrice;
+    const pnl = currVal - invested;
+    const pct = invested ? (pnl / invested) * 100 : 0;
+    // Day change — compact format
+    let dayChgHtml = '<span style="color:var(--text3)">—</span>';
+    if (s.prevClose && s.currentPrice) {
+      const dc = s.currentPrice - s.prevClose;
+      const dp = (dc / s.prevClose) * 100;
+      dayChgHtml = `<span class="${dc >= 0 ? 'td-pos' : 'td-neg'}" style="font-size:11.5px">${dc >= 0 ? '+' : ''}${dc.toFixed(2)}<br><span style="font-weight:400">(${fmtPct(dp)})</span></span>`;
+    }
+    const liveTag = s.lastFetched
+      ? `<span style="font-size:10px;color:var(--green)">● live</span>`
+      : `<span style="font-size:10px;color:var(--text3)">manual</span>`;
+    const tickerTag = s.ticker
+      ? `<span style="font-size:10.5px;color:var(--accent2);font-weight:600">${s.ticker}</span>`
+      : '';
+    return `<tr>
+      <td style="max-width:140px">
+        <div class="td-bold" style="font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.name}</div>
+        <div style="display:flex;gap:6px;align-items:center;margin-top:2px">${tickerTag}${liveTag}</div>
+      </td>
+      <td>${fmtN(s.qty)}</td>
+      <td>${fmt(s.avgPrice)}</td>
+      <td>${fmt(invested)}</td>
+      <td><input class="price-input" type="number" value="${s.currentPrice}" onchange="updateStockPrice('${s.ticker||s.name}',this.value)"></td>
+      <td class="td-bold">${fmt(currVal)}</td>
+      <td class="${pnlCls(pnl)}">${fmt(pnl)}</td>
+      <td class="${pnlCls(pct)}">${fmtPct(pct)}</td>
+      <td style="white-space:nowrap">${dayChgHtml}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-green btn-sm" onclick="openSellStock('${s.name}')">Sell</button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteStock('${s.name}')" style="margin-left:4px">🗑</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function updateStockPrice(key, val) {
+  const s = db.stocks.find(x => x.ticker === key || x.name === key);
+  if (s) { s.currentPrice = parseFloat(val) || 0; s.lastFetched = null; save(); renderStocksTable(); refreshDashboard(); }
+}
+function deleteStock(name) {
+  if (!confirm(`Delete ${name}?`)) return;
+  db.stocks = db.stocks.filter(s => s.name !== name);
+  save(); renderStocksTable(); refreshDashboard();
+  toast(`${name} removed`);
+}
+function openSellStock(name) {
+  const s = db.stocks.find(x => x.name === name);
+  if (!s) return;
+  sellStockTarget = name;
+  document.getElementById('sellStockName').textContent = name;
+  document.getElementById('sellStockAvail').textContent = fmtN(s.qty);
+  document.getElementById('sellStockQty').value = '';
+  document.getElementById('sellStockPrice').value = s.currentPrice;
+  document.getElementById('sellStockDate').value = today();
+  openModal('sellStockModal');
+}
+function confirmSellStock() {
+  const s = db.stocks.find(x => x.name === sellStockTarget);
+  if (!s) return;
+  const qty = parseFloat(document.getElementById('sellStockQty').value);
+  const price = parseFloat(document.getElementById('sellStockPrice').value);
+  const date = document.getElementById('sellStockDate').value;
+  if (isNaN(qty) || qty <= 0 || qty > s.qty) { toast('Invalid quantity', 'error'); return; }
+  if (isNaN(price) || price <= 0) { toast('Invalid price', 'error'); return; }
+  const buyVal = qty * s.avgPrice;
+  const sellVal = qty * price;
+  const pnl = sellVal - buyVal;
+  db.realized.push({ date, asset: s.name, type: 'Stock', qty, buyValue: buyVal, sellValue: sellVal, pnl });
+  addActivity('sell', `${s.name} × ${qty}`, 'Stock', sellVal);
+  s.qty -= qty;
+  if (s.qty <= 0.0001) db.stocks = db.stocks.filter(x => x.name !== s.name);
+  save(); closeModal('sellStockModal'); renderStocksTable(); refreshDashboard();
+  toast(`Sold ${qty} × ${s.name} — P&L: ${fmt(pnl)}`);
+}
+
+// ===================== METALS =====================
+function saveGlobalPrices() {
+  db.globalPrices.gold = parseFloat(document.getElementById('goldPrice').value) || 0;
+  db.globalPrices.silver = parseFloat(document.getElementById('silverPrice').value) || 0;
+  save(); refreshDashboard();
+}
+function restoreGlobalPrices() {
+  if (db.globalPrices.gold) document.getElementById('goldPrice').value = db.globalPrices.gold;
+  if (db.globalPrices.silver) document.getElementById('silverPrice').value = db.globalPrices.silver;
+}
+function getMetalConsolidated(type) {
+  const entries = db.metals.filter(m => m.type === type);
+  const totalGrams = entries.reduce((s, m) => s + m.grams, 0);
+  // invested = remaining grams × avg buy price per entry (reflects actual remaining cost basis)
+  const totalInvested = entries.reduce((s, m) => s + m.grams * m.avgPricePerGram, 0);
+  // weighted avg buy price per gram across remaining holdings
+  const avgBuyPrice = totalGrams > 0 ? totalInvested / totalGrams : 0;
+  const currP = type === 'Gold' ? db.globalPrices.gold : db.globalPrices.silver;
+  const currVal = totalGrams * currP;
+  const pnl = currVal - totalInvested;
+  return { totalGrams, totalInvested, avgBuyPrice, currP, currVal, pnl };
+}
+function calcMetalAmount() {
+  const grams = parseFloat(document.getElementById('m-grams').value);
+  const price = parseFloat(document.getElementById('m-buyprice').value);
+  const el = document.getElementById('metalAmountPreview');
+  if (!isNaN(grams) && grams > 0 && !isNaN(price) && price > 0) {
+    const total = grams * price;
+    el.innerHTML = `💰 Total Amount: <strong style="color:var(--accent)">${fmt(total)}</strong> &nbsp;·&nbsp; <span style="color:var(--text3)">${grams.toFixed(3)}g × ${fmt(price)}/g</span>`;
+  } else {
+    el.innerHTML = '';
+  }
+}
+function addMetal() {
+  const type = document.getElementById('m-type').value;
+  const grams = parseFloat(document.getElementById('m-grams').value);
+  const buyPrice = parseFloat(document.getElementById('m-buyprice').value);
+  const date = document.getElementById('m-date').value;
+  if (isNaN(grams) || grams <= 0) { toast('Enter valid grams', 'error'); return; }
+  if (isNaN(buyPrice) || buyPrice <= 0) { toast('Enter valid buy price', 'error'); return; }
+  if (!date) { toast('Select a date', 'error'); return; }
+  const invested = grams * buyPrice;
+  db.metals.push({ id: Date.now(), type, grams, avgPricePerGram: buyPrice, invested, date });
+  addActivity('buy', `${type} ${grams.toFixed(3)}g`, type, invested);
+  save(); renderMetalsTable(); refreshDashboard();
+  document.getElementById('m-grams').value = '';
+  document.getElementById('m-buyprice').value = '';
+  document.getElementById('m-date').value = '';
+  document.getElementById('metalAmountPreview').innerHTML = '';
+  toast(`Added ${grams.toFixed(3)}g of ${type} @ ${fmt(buyPrice)}/g`);
+}
+function renderMetalSummaryCards() {
+  const g = getMetalConsolidated('Gold');
+  const sv = getMetalConsolidated('Silver');
+  const setCard = (prefix, data, color) => {
+    const gramsEl = document.getElementById(prefix + 'TotalGrams');
+    const avgEl = document.getElementById(prefix + 'AvgPrice');
+    const valEl = document.getElementById(prefix + 'CurrValue');
+    const pnlEl = document.getElementById(prefix + 'Pnl');
+    if (!gramsEl) return;
+    gramsEl.textContent = data.totalGrams > 0 ? data.totalGrams.toFixed(3) + 'g' : '—';
+    avgEl.textContent = data.avgBuyPrice > 0 ? fmt(data.avgBuyPrice) : '—';
+    valEl.textContent = data.currP > 0 ? fmt(data.currVal) : '—';
+    if (data.totalGrams > 0 && data.currP > 0) {
+      const pct = data.totalInvested ? (data.pnl / data.totalInvested) * 100 : 0;
+      pnlEl.textContent = fmt(data.pnl) + ' (' + fmtPct(pct) + ')';
+      pnlEl.style.color = data.pnl >= 0 ? 'var(--green)' : 'var(--red)';
+    } else {
+      pnlEl.textContent = '—';
+      pnlEl.style.color = '';
+    }
+  };
+  setCard('gold', g, 'var(--gold)');
+  setCard('silver', sv, 'var(--silver)');
+}
+function renderMetalsTable() {
+  renderMetalSummaryCards();
+  const q = (document.getElementById('metalSearch').value || '').toLowerCase();
+  const goldP = db.globalPrices.gold;
+  const silverP = db.globalPrices.silver;
+  let rows = db.metals.filter(m => m.type.toLowerCase().includes(q) || m.date.includes(q));
+  rows = rows.sort((a, b) => new Date(b.date) - new Date(a.date));
+  const tbody = document.getElementById('metalsTbody');
+  document.getElementById('metalsEmpty').style.display = rows.length ? 'none' : '';
+  document.getElementById('metalsTable').style.display = rows.length ? '' : 'none';
+  tbody.innerHTML = rows.map(m => {
+    const currP = m.type === 'Gold' ? goldP : silverP;
+    const rowInvested = m.grams * m.avgPricePerGram; // cost basis for remaining grams
+    const currVal = m.grams * currP;
+    const pnl = currVal - rowInvested;
+    const pct = rowInvested ? (pnl / rowInvested) * 100 : 0;
+    const cls = m.type === 'Gold' ? 'td-gold' : 'td-silver';
+    return `<tr>
+      <td>${m.date}</td>
+      <td><span class="pill ${m.type === 'Gold' ? 'pill-gold' : 'pill-silver'}">${m.type}</span></td>
+      <td class="${cls}">${Number(m.grams).toFixed(3)}g</td>
+      <td>${fmt(m.avgPricePerGram)}</td>
+      <td>${fmt(rowInvested)}</td>
+      <td>${currP ? fmt(currP) : '—'}</td>
+      <td class="td-bold">${currP ? fmt(currVal) : '—'}</td>
+      <td class="${pnlCls(pnl)}">${currP ? fmt(pnl) : '—'}</td>
+      <td class="${pnlCls(pct)}">${currP ? fmtPct(pct) : '—'}</td>
+      <td><button class="btn btn-danger btn-sm btn-icon" onclick="deleteMetal(${m.id})">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+function deleteMetal(id) {
+  if (!confirm('Delete this entry?')) return;
+  db.metals = db.metals.filter(m => m.id !== id);
+  save(); renderMetalsTable(); refreshDashboard(); toast('Entry removed');
+}
+// Consolidated sell — works on total grams with weighted avg price
+function openSellMetalConsolidated(type) {
+  const data = getMetalConsolidated(type);
+  if (data.totalGrams <= 0) { toast(`No ${type} holdings to sell`, 'error'); return; }
+  sellMetalTarget = type;
+  document.getElementById('sellMetalType').textContent = type;
+  document.getElementById('sellMetalTotalGrams').textContent = data.totalGrams.toFixed(3) + 'g';
+  document.getElementById('sellMetalAvgPriceDisplay').textContent = fmt(data.avgBuyPrice);
+  document.getElementById('sellMetalCurrPriceDisplay').textContent = data.currP ? fmt(data.currP) : '—';
+  document.getElementById('sellMetalAvail').textContent = data.totalGrams.toFixed(3);
+  document.getElementById('sellMetalGrams').value = '';
+  document.getElementById('sellMetalPrice').value = data.currP || '';
+  document.getElementById('sellMetalDate').value = today();
+  document.getElementById('metalSellPreview').style.display = 'none';
+  openModal('sellMetalModal');
+}
+function previewMetalSell() {
+  const grams = parseFloat(document.getElementById('sellMetalGrams').value);
+  const price = parseFloat(document.getElementById('sellMetalPrice').value);
+  const preview = document.getElementById('metalSellPreview');
+  if (!isNaN(grams) && grams > 0 && !isNaN(price) && price > 0 && sellMetalTarget) {
+    const data = getMetalConsolidated(sellMetalTarget);
+    const sellVal = grams * price;
+    const buyVal = grams * data.avgBuyPrice;
+    const pnl = sellVal - buyVal;
+    document.getElementById('metalSellValue').textContent = fmt(sellVal);
+    document.getElementById('metalSellPnl').textContent = fmt(pnl);
+    document.getElementById('metalSellPnl').style.color = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+    preview.style.display = '';
+  } else {
+    preview.style.display = 'none';
+  }
+}
+function confirmSellMetalConsolidated() {
+  const type = sellMetalTarget;
+  const data = getMetalConsolidated(type);
+  const grams = parseFloat(document.getElementById('sellMetalGrams').value);
+  const price = parseFloat(document.getElementById('sellMetalPrice').value);
+  const date = document.getElementById('sellMetalDate').value;
+  if (isNaN(grams) || grams <= 0 || grams > data.totalGrams + 0.0000001) { toast('Invalid grams — exceeds total holdings', 'error'); return; }
+  if (isNaN(price) || price <= 0) { toast('Invalid price', 'error'); return; }
+
+  // Deduct grams proportionally from entries (FIFO)
+  let remaining = grams;
+  const sorted = db.metals.filter(m => m.type === type).sort((a, b) => new Date(a.date) - new Date(b.date));
+  for (const entry of sorted) {
+    if (remaining <= 0) break;
+    if (entry.grams <= remaining + 0.0000001) {
+      remaining -= entry.grams;
+      entry.grams = 0;
+    } else {
+      entry.grams -= remaining;
+      remaining = 0;
+    }
+  }
+  // Remove depleted entries
+  db.metals = db.metals.filter(m => m.grams > 0.0000001);
+
+  const buyVal = grams * data.avgBuyPrice;
+  const sellVal = grams * price;
+  const pnl = sellVal - buyVal;
+  db.realized.push({ date, asset: type, type, qty: grams.toFixed(3) + 'g', buyValue: buyVal, sellValue: sellVal, pnl });
+  addActivity('sell', `${type} ${grams.toFixed(3)}g`, type, sellVal);
+  save(); closeModal('sellMetalModal'); renderMetalsTable(); refreshDashboard();
+  toast(`Sold ${grams.toFixed(3)}g ${type} — P&L: ${fmt(pnl)}`);
+}
+
+// ===================== MUTUAL FUNDS =====================
+function getMFSchemes() {
+  // Returns unique schemes with aggregated data
+  const schemes = {};
+  db.mf.forEach(m => {
+    if (!schemes[m.scheme]) schemes[m.scheme] = { scheme: m.scheme, totalUnits: 0, totalInvested: 0, weightedNavSum: 0 };
+    schemes[m.scheme].totalUnits += m.units;
+    schemes[m.scheme].totalInvested += m.units * m.buyNav;
+    schemes[m.scheme].weightedNavSum += m.units * m.buyNav;
+  });
+  return Object.values(schemes).map(s => ({
+    ...s,
+    avgBuyNav: s.totalUnits > 0 ? s.weightedNavSum / s.totalUnits : 0,
+    currentNav: db.mfNavs[s.scheme] || 0,
+    currentValue: s.totalUnits * (db.mfNavs[s.scheme] || 0),
+    pnl: s.totalUnits * (db.mfNavs[s.scheme] || 0) - s.totalInvested
+  }));
+}
+function addMF() {
+  const scheme = document.getElementById('mf-name').value.trim();
+  const date = document.getElementById('mf-date').value;
+  const units = parseFloat(document.getElementById('mf-units').value);
+  const nav = parseFloat(document.getElementById('mf-nav').value);
+  if (!scheme || !date || isNaN(units) || units <= 0 || isNaN(nav) || nav <= 0) { toast('Fill all fields', 'error'); return; }
+  if (!db.mfNavs[scheme]) db.mfNavs[scheme] = nav;
+  db.mf.push({ id: Date.now(), scheme, date, units, buyNav: nav, currentNav: db.mfNavs[scheme] });
+  addActivity('buy', `${scheme} × ${units.toFixed(3)} units`, 'MF', units * nav);
+  save(); renderMFTable(); refreshDashboard();
+  document.getElementById('mf-name').value = '';
+  document.getElementById('mf-date').value = '';
+  document.getElementById('mf-units').value = '';
+  document.getElementById('mf-nav').value = '';
+  toast(`Added ${units.toFixed(3)} units of ${scheme}`);
+}
+function renderMFSchemeSummary() {
+  const schemes = getMFSchemes();
+  const el = document.getElementById('mfSchemeSummary');
+  if (!el) return;
+  if (!schemes.length) { el.innerHTML = ''; return; }
+  el.innerHTML = `<div class="grid grid-2" style="margin-bottom:0">` +
+    schemes.map(s => {
+      const pct = s.totalInvested ? (s.pnl / s.totalInvested) * 100 : 0;
+      const navSet = s.currentNav > 0;
+      return `<div class="card card-sm" style="border-color:rgba(124,109,250,0.2)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div>
+            <div style="font-weight:700;font-size:14px;color:var(--accent3)">${s.scheme}</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">${fmtN(s.totalUnits, 3)} units · Avg NAV ${fmt(s.avgBuyNav)}</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn btn-outline btn-sm" style="font-size:11px" onclick="openNavModal('${s.scheme.replace(/'/g,"\\'")}')">📝 NAV</button>
+            <button class="btn btn-green btn-sm" onclick="openSellMFScheme('${s.scheme.replace(/'/g,"\\'")}')">Sell</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:20px;flex-wrap:wrap">
+          <div><div style="font-size:11px;color:var(--text3)">Invested</div><div style="font-weight:600;font-size:14px">${fmt(s.totalInvested)}</div></div>
+          <div><div style="font-size:11px;color:var(--text3)">Curr NAV</div><div style="font-weight:600;font-size:14px">${navSet ? fmt(s.currentNav) : '—'}</div></div>
+          <div><div style="font-size:11px;color:var(--text3)">Curr Value</div><div style="font-weight:600;font-size:14px">${navSet ? fmt(s.currentValue) : '—'}</div></div>
+          <div><div style="font-size:11px;color:var(--text3)">P&L</div>
+            <div style="font-weight:700;font-size:14px;color:${navSet ? (s.pnl >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--text3)'}">
+              ${navSet ? fmt(s.pnl) + ' (' + fmtPct(pct) + ')' : '—'}
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('') + `</div>`;
+}
+function renderMFTable() {
+  renderMFSchemeSummary();
+  const q = (document.getElementById('mfSearch').value || '').toLowerCase();
+  let rows = db.mf.filter(m => m.scheme.toLowerCase().includes(q) || m.date.includes(q));
+  rows = rows.sort((a, b) => new Date(b.date) - new Date(a.date));
+  const tbody = document.getElementById('mfTbody');
+  document.getElementById('mfEmpty').style.display = rows.length ? 'none' : '';
+  document.getElementById('mfTable').style.display = rows.length ? '' : 'none';
+  tbody.innerHTML = rows.map(m => {
+    const currNav = db.mfNavs[m.scheme] || m.currentNav;
+    const invested = m.units * m.buyNav;
+    const currVal = m.units * currNav;
+    const pnl = currVal - invested;
+    const pct = invested ? (pnl / invested) * 100 : 0;
+    return `<tr>
+      <td>${m.date}</td>
+      <td style="font-weight:500;color:var(--accent3)">${m.scheme}</td>
+      <td>${fmtN(m.units, 3)}</td>
+      <td>${fmt(m.buyNav)}</td>
+      <td>${fmt(invested)}</td>
+      <td class="td-bold">${fmt(currNav)}</td>
+      <td class="td-bold">${fmt(currVal)}</td>
+      <td class="${pnlCls(pnl)}">${fmt(pnl)}</td>
+      <td class="${pnlCls(pct)}">${fmtPct(pct)}</td>
+      <td><button class="btn btn-danger btn-sm btn-icon" onclick="deleteMF(${m.id})">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+function openNavModal(scheme) {
+  navTarget = scheme;
+  document.getElementById('navModalName').textContent = scheme;
+  document.getElementById('navModalValue').value = db.mfNavs[scheme] || '';
+  openModal('navModal');
+}
+function confirmUpdateNAV() {
+  const val = parseFloat(document.getElementById('navModalValue').value);
+  if (isNaN(val) || val <= 0) { toast('Invalid NAV', 'error'); return; }
+  db.mfNavs[navTarget] = val;
+  db.mf.forEach(m => { if (m.scheme === navTarget) m.currentNav = val; });
+  save(); closeModal('navModal'); renderMFTable(); refreshDashboard();
+  toast(`NAV updated for ${navTarget}`);
+}
+function deleteMF(id) {
+  if (!confirm('Delete this entry?')) return;
+  db.mf = db.mf.filter(m => m.id !== id);
+  // Clean up orphaned NAV if no entries for scheme remain
+  save(); renderMFTable(); refreshDashboard(); toast('Entry removed');
+}
+// Scheme-level consolidated sell — deducts from total units with weighted avg NAV
+function openSellMFScheme(scheme) {
+  const schemes = getMFSchemes();
+  const s = schemes.find(x => x.scheme === scheme);
+  if (!s || s.totalUnits <= 0) { toast('No units to sell', 'error'); return; }
+  sellMFTarget = scheme;
+  document.getElementById('sellMFName').textContent = scheme;
+  document.getElementById('sellMFTotalUnits').textContent = fmtN(s.totalUnits, 3) + ' units';
+  document.getElementById('sellMFAvgNavDisplay').textContent = fmt(s.avgBuyNav);
+  document.getElementById('sellMFCurrNavDisplay').textContent = s.currentNav > 0 ? fmt(s.currentNav) : '—';
+  document.getElementById('sellMFAvail').textContent = fmtN(s.totalUnits, 3);
+  document.getElementById('sellMFUnits').value = '';
+  document.getElementById('sellMFNav').value = s.currentNav || '';
+  document.getElementById('sellMFDate').value = today();
+  document.getElementById('mfSellPreview').style.display = 'none';
+  openModal('sellMFModal');
+}
+function previewMFSell() {
+  const units = parseFloat(document.getElementById('sellMFUnits').value);
+  const nav = parseFloat(document.getElementById('sellMFNav').value);
+  const preview = document.getElementById('mfSellPreview');
+  if (!isNaN(units) && units > 0 && !isNaN(nav) && nav > 0 && sellMFTarget) {
+    const schemes = getMFSchemes();
+    const s = schemes.find(x => x.scheme === sellMFTarget);
+    if (!s) return;
+    const sellVal = units * nav;
+    const buyVal = units * s.avgBuyNav;
+    const pnl = sellVal - buyVal;
+    document.getElementById('mfSellValue').textContent = fmt(sellVal);
+    document.getElementById('mfSellPnl').textContent = fmt(pnl);
+    document.getElementById('mfSellPnl').style.color = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+    preview.style.display = '';
+  } else {
+    preview.style.display = 'none';
+  }
+}
+function confirmSellMFConsolidated() {
+  const scheme = sellMFTarget;
+  const schemes = getMFSchemes();
+  const s = schemes.find(x => x.scheme === scheme);
+  if (!s) return;
+  const units = parseFloat(document.getElementById('sellMFUnits').value);
+  const nav = parseFloat(document.getElementById('sellMFNav').value);
+  const date = document.getElementById('sellMFDate').value;
+  if (isNaN(units) || units <= 0 || units > s.totalUnits + 0.001) { toast('Invalid units — exceeds total holdings', 'error'); return; }
+  if (isNaN(nav) || nav <= 0) { toast('Invalid NAV', 'error'); return; }
+
+  // Deduct units FIFO across entries of this scheme
+  let remaining = units;
+  const sorted = db.mf.filter(m => m.scheme === scheme).sort((a, b) => new Date(a.date) - new Date(b.date));
+  for (const entry of sorted) {
+    if (remaining <= 0) break;
+    if (entry.units <= remaining + 0.001) {
+      remaining -= entry.units;
+      entry.units = 0;
+    } else {
+      entry.units -= remaining;
+      remaining = 0;
+    }
+  }
+  db.mf = db.mf.filter(m => m.units > 0.001);
+
+  const buyVal = units * s.avgBuyNav;
+  const sellVal = units * nav;
+  const pnl = sellVal - buyVal;
+  db.realized.push({ date, asset: scheme, type: 'MF', qty: fmtN(units, 3) + ' units', buyValue: buyVal, sellValue: sellVal, pnl });
+  addActivity('sell', `${scheme} × ${units.toFixed(3)}`, 'MF', sellVal);
+  save(); closeModal('sellMFModal'); renderMFTable(); refreshDashboard();
+  toast(`Sold ${units.toFixed(3)} units — P&L: ${fmt(pnl)}`);
+}
+
+// ===================== REALIZED P&L =====================
+function renderRealized() {
+  const rows = [...db.realized].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const tbody = document.getElementById('realizedTbody');
+  document.getElementById('realizedEmpty').style.display = rows.length ? 'none' : '';
+  let totalPnl = 0, gains = 0, losses = 0;
+  rows.forEach(r => {
+    totalPnl += r.pnl;
+    if (r.pnl >= 0) gains += r.pnl; else losses += r.pnl;
+  });
+  document.getElementById('r-total').textContent = fmt(totalPnl);
+  document.getElementById('r-total').className = 'stat-value ' + (totalPnl >= 0 ? 'pos' : 'neg');
+  document.getElementById('r-gains').textContent = fmt(gains);
+  document.getElementById('r-losses').textContent = fmt(losses);
+  tbody.innerHTML = rows.map(r => `<tr>
+    <td>${r.date}</td>
+    <td class="td-bold">${r.asset}</td>
+    <td><span class="pill pill-${r.type === 'Stock' ? 'stock' : r.type === 'MF' ? 'mf' : r.type === 'Gold' ? 'gold' : 'silver'}">${r.type}</span></td>
+    <td>${r.qty}</td>
+    <td>${fmt(r.buyValue)}</td>
+    <td>${fmt(r.sellValue)}</td>
+    <td class="${pnlCls(r.pnl)}">${fmt(r.pnl)}</td>
+  </tr>`).join('');
+}
+
+// ===================== ACTIVITY =====================
+function addActivity(dir, name, type, val) {
+  db.activity.unshift({ dir, name, type, val, date: today() });
+  if (db.activity.length > 20) db.activity.pop();
+}
+
+// ===================== DASHBOARD =====================
+function getStocksStats() {
+  let invested = 0, currVal = 0;
+  db.stocks.forEach(s => { invested += s.qty * s.avgPrice; currVal += s.qty * s.currentPrice; });
+  return { invested, currVal, pnl: currVal - invested };
+}
+function getMetalsStats(type) {
+  const priceKey = type === 'Gold' ? 'gold' : 'silver';
+  let invested = 0, currVal = 0, totalGrams = 0;
+  db.metals.filter(m => m.type === type).forEach(m => {
+    invested += m.grams * m.avgPricePerGram;
+    currVal += m.grams * (db.globalPrices[priceKey] || m.avgPricePerGram);
+    totalGrams += m.grams;
+  });
+  return { invested, currVal, pnl: currVal - invested, totalGrams };
+}
+function getMFStats() {
+  const schemes = getMFSchemes();
+  let invested = 0, currVal = 0;
+  schemes.forEach(s => { invested += s.totalInvested; currVal += s.currentValue; });
+  return { invested, currVal, pnl: currVal - invested };
+}
+
+// Snapshot: record portfolio value at meaningful events (buy/sell/price change)
+function recordSnapshot() {
+  const s = getStocksStats(), g = getMetalsStats('Gold'), sv = getMetalsStats('Silver'), mf = getMFStats();
+  const inv = s.invested + g.invested + sv.invested + mf.invested;
+  const curr = s.currVal + g.currVal + sv.currVal + mf.currVal;
+  if (inv === 0 && curr === 0) return;
+  if (!db.snapshots) db.snapshots = [];
+  const snap = { date: today(), ts: Date.now(), inv, curr };
+  // Replace same-day snapshot or append
+  const last = db.snapshots[db.snapshots.length - 1];
+  if (last && last.date === snap.date) db.snapshots[db.snapshots.length - 1] = snap;
+  else db.snapshots.push(snap);
+  // Keep last 3650 snapshots (10 years)
+  if (db.snapshots.length > 3650) db.snapshots = db.snapshots.slice(-3650);
+}
+
+let currentPeriod = '1M';
+function setChartPeriod(period, btn) {
+  currentPeriod = period;
+  document.querySelectorAll('.chart-period-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderLineChart();
+}
+
+function getSnapshotsForPeriod(period) {
+  if (!db.snapshots || !db.snapshots.length) return [];
+  const now = new Date(); now.setHours(0,0,0,0);
+  const cutoffs = { '1M':30,'3M':90,'6M':180,'1Y':365,'3Y':1095,'5Y':1825,'ALL':99999 };
+  const days = cutoffs[period] || 30;
+  const cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - days);
+  let snaps = db.snapshots.filter(s => new Date(s.date) >= cutoff);
+  if (!snaps.length) snaps = db.snapshots; // fallback: show all
+  // Deduplicate: one snap per day (latest)
+  const byDay = {};
+  snaps.forEach(s => { byDay[s.date] = s; });
+  return Object.values(byDay).sort((a,b) => new Date(a.date) - new Date(b.date));
+}
+
+function refreshDashboard() {
+  const s = getStocksStats();
+  const g = getMetalsStats('Gold');
+  const sv = getMetalsStats('Silver');
+  const mf = getMFStats();
+  const totalInv = s.invested + g.invested + sv.invested + mf.invested;
+  const totalCurr = s.currVal + g.currVal + sv.currVal + mf.currVal;
+  const totalPnl = totalCurr - totalInv;
+  const totalPct = totalInv ? (totalPnl / totalInv) * 100 : 0;
+
+  document.getElementById('d-invested').textContent = fmt(totalInv);
+  document.getElementById('d-current').textContent = fmt(totalCurr);
+  document.getElementById('d-pnl').textContent = fmt(totalPnl);
+  document.getElementById('d-pnl').className = 'stat-value ' + (totalPnl >= 0 ? 'pos' : 'neg');
+  document.getElementById('d-pnl-sub').innerHTML = `<span class="badge ${pnlBadgeCls(totalPct)}">${fmtPct(totalPct)}</span>`;
+  document.getElementById('d-ret').textContent = fmtPct(totalPct);
+  document.getElementById('d-ret').className = 'stat-value ' + (totalPct >= 0 ? 'pos' : 'neg');
+
+  // Mini cards — stocks + MF
+  const setMini = (valId, invId, pnlId, val, inv, pnl) => {
+    document.getElementById(valId).textContent = fmt(val);
+    if (invId) document.getElementById(invId).textContent = fmt(inv);
+    const pct = inv ? (pnl / inv) * 100 : 0;
+    document.getElementById(pnlId).innerHTML = `<span class="badge ${pnlBadgeCls(pnl)}">${fmt(pnl)} (${fmtPct(pct)})</span>`;
+  };
+  setMini('d-stocks-val','d-stocks-inv','d-stocks-pnl', s.currVal, s.invested, s.pnl);
+  setMini('d-mf-val','d-mf-inv','d-mf-pnl', mf.currVal, mf.invested, mf.pnl);
+
+  // Gold & Silver mini cards with grams
+  const setMetalMini = (valId, invId, pnlId, gramsId, stats) => {
+    document.getElementById(valId).textContent = fmt(stats.currVal);
+    if (invId) document.getElementById(invId).textContent = fmt(stats.invested);
+    if (gramsId) document.getElementById(gramsId).textContent = stats.totalGrams.toFixed(3) + 'g';
+    const pct = stats.invested ? (stats.pnl / stats.invested) * 100 : 0;
+    document.getElementById(pnlId).innerHTML = `<span class="badge ${pnlBadgeCls(stats.pnl)}">${fmt(stats.pnl)} (${fmtPct(pct)})</span>`;
+  };
+  setMetalMini('d-gold-val','d-gold-inv','d-gold-pnl','d-gold-grams', g);
+  setMetalMini('d-silver-val','d-silver-inv','d-silver-pnl','d-silver-grams', sv);
+
+  // Save snapshot then render charts
+  recordSnapshot();
+  renderPieChart(s.currVal, mf.currVal, g.currVal, sv.currVal);
+  renderLineChart();
+  renderTopGainer(s, g, sv, mf);
+  renderActivity();
+}
+
+function renderPieChart(sv_s, sv_mf, sv_g, sv_sv) {
+  const data = [sv_s, sv_mf, sv_g, sv_sv];
+  const total = data.reduce((a, b) => a + b, 0);
+  if (pieChart) pieChart.destroy();
+  const ctx = document.getElementById('pieChart').getContext('2d');
+  pieChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Stocks', 'Mutual Funds', 'Gold', 'Silver'],
+      datasets: [{ data, backgroundColor: ['#4f9cf9','#7c6dfa','#f6c053','#a8c0d8'], borderWidth: 2, borderColor: '#0e1623', hoverOffset: 6 }]
+    },
+    options: {
+      plugins: { legend: { position: 'bottom', labels: { color: '#8ba3c0', font: { size: 12 }, padding: 16 } }, tooltip: { callbacks: { label: (c) => `${c.label}: ${fmt(c.parsed)} (${total ? ((c.parsed/total)*100).toFixed(1) : 0}%)` } } },
+      cutout: '65%', responsive: true, maintainAspectRatio: false
+    }
+  });
+}
+
+function renderLineChart() {
+  if (lineChart) { lineChart.destroy(); lineChart = null; }
+  const ctx = document.getElementById('lineChart').getContext('2d');
+  const snaps = getSnapshotsForPeriod(currentPeriod);
+
+  // Always include today's snapshot
+  const s = getStocksStats(), g = getMetalsStats('Gold'), sv = getMetalsStats('Silver'), mf = getMFStats();
+  const todayInv = s.invested + g.invested + sv.invested + mf.invested;
+  const todayCurr = s.currVal + g.currVal + sv.currVal + mf.currVal;
+  const todaySnap = { date: today(), inv: todayInv, curr: todayCurr };
+  const allSnaps = snaps.length ? [...snaps] : [todaySnap];
+  // Make sure today is in there
+  if (allSnaps[allSnaps.length-1].date !== todaySnap.date) allSnaps.push(todaySnap);
+
+  const labels = allSnaps.map(s => s.date);
+  const investedData = allSnaps.map(s => +s.inv.toFixed(2));
+  const currentData  = allSnaps.map(s => +s.curr.toFixed(2));
+
+  // Chart summary stats
+  const firstInv = allSnaps[0].inv, lastInv = todayInv;
+  const firstCurr = allSnaps[0].curr, lastCurr = todayCurr;
+  const pnlVal = lastCurr - lastInv;
+  const pnlPct = lastInv ? (pnlVal / lastInv) * 100 : 0;
+  const periodGain = lastCurr - firstCurr;
+  const periodPct = firstCurr ? (periodGain / firstCurr) * 100 : 0;
+  const statsEl = document.getElementById('chartStats');
+  if (statsEl) {
+    statsEl.innerHTML = `
+      <div style="font-size:11.5px"><span style="color:var(--text3)">Invested</span><br><strong>${fmt(lastInv)}</strong></div>
+      <div style="font-size:11.5px"><span style="color:var(--text3)">Current</span><br><strong>${fmt(lastCurr)}</strong></div>
+      <div style="font-size:11.5px"><span style="color:var(--text3)">P&L</span><br><strong class="${pnlVal>=0?'td-pos':'td-neg'}">${fmt(pnlVal)} (${fmtPct(pnlPct)})</strong></div>
+      <div style="font-size:11.5px"><span style="color:var(--text3)">Period Gain</span><br><strong class="${periodGain>=0?'td-pos':'td-neg'}">${fmt(periodGain)} (${fmtPct(periodPct)})</strong></div>`;
+  }
+
+  const gradGreen = ctx.createLinearGradient(0,0,0,210);
+  gradGreen.addColorStop(0,'rgba(34,211,160,0.18)');
+  gradGreen.addColorStop(1,'rgba(34,211,160,0)');
+  const gradBlue = ctx.createLinearGradient(0,0,0,210);
+  gradBlue.addColorStop(0,'rgba(79,156,249,0.12)');
+  gradBlue.addColorStop(1,'rgba(79,156,249,0)');
+
+  lineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Invested', data: investedData, borderColor: '#4f9cf9', backgroundColor: gradBlue, tension: .35, fill: true, pointRadius: labels.length <= 10 ? 3 : 0, pointHoverRadius: 5, borderWidth: 2 },
+        { label: 'Current Value', data: currentData, borderColor: '#22d3a0', backgroundColor: gradGreen, tension: .35, fill: true, pointRadius: labels.length <= 10 ? 3 : 0, pointHoverRadius: 5, borderWidth: 2 }
+      ]
+    },
+    options: {
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#8ba3c0', font: { size: 11 }, boxWidth: 14, padding: 14 } },
+        tooltip: {
+          backgroundColor: '#141e2e', borderColor: '#1a2640', borderWidth: 1,
+          callbacks: {
+            label: c => ` ${c.dataset.label}: ${fmt(c.parsed.y)}`,
+            afterBody: (items) => {
+              const inv = items.find(i => i.dataset.label === 'Invested')?.parsed.y || 0;
+              const curr = items.find(i => i.dataset.label === 'Current Value')?.parsed.y || 0;
+              const p = curr - inv, pp = inv ? (p/inv)*100 : 0;
+              return [``, ` P&L: ${fmt(p)} (${fmtPct(pp)})`];
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#4e6680', maxRotation: 0, maxTicksLimit: 7, font:{size:10} }, grid: { color: 'rgba(255,255,255,0.03)' } },
+        y: { ticks: { color: '#4e6680', font:{size:10}, callback: v => '₹' + (v >= 1e5 ? (v/1e5).toFixed(1)+'L' : v >= 1e3 ? (v/1e3).toFixed(1)+'K' : v) }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      },
+      responsive: true, maintainAspectRatio: false
+    }
+  });
+}
+function renderTopGainer(s, g, sv, mf) {
+  const candidates = [];
+  db.stocks.forEach(x => {
+    const inv = x.qty * x.avgPrice, curr = x.qty * x.currentPrice;
+    const pct = inv ? ((curr - inv) / inv) * 100 : 0;
+    candidates.push({ name: x.name, type: 'Stock', pct, pnl: curr - inv });
+  });
+  const goldPct = g.invested ? (g.pnl / g.invested) * 100 : 0;
+  const svPct = sv.invested ? (sv.pnl / sv.invested) * 100 : 0;
+  const mfPct = mf.invested ? (mf.pnl / mf.invested) * 100 : 0;
+  if (g.invested) candidates.push({ name: 'Gold', type: 'Gold', pct: goldPct, pnl: g.pnl });
+  if (sv.invested) candidates.push({ name: 'Silver', type: 'Silver', pct: svPct, pnl: sv.pnl });
+  if (mf.invested) candidates.push({ name: 'Mutual Funds', type: 'MF', pct: mfPct, pnl: mf.pnl });
+  candidates.sort((a, b) => b.pct - a.pct);
+  const top = candidates[0];
+  const el = document.getElementById('topGainerContent');
+  if (!top) { el.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">No positions yet</div></div>'; return; }
+  el.innerHTML = `<div class="gainer-card">
+    <div style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">${top.type}</div>
+    <div class="gainer-name">${top.name}</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+      <span class="badge badge-pos" style="font-size:14px;padding:6px 14px">+${top.pct.toFixed(2)}%</span>
+      <span style="color:var(--green);font-weight:600;font-size:15px">${fmt(top.pnl)}</span>
+    </div>
+  </div>`;
+}
+function renderActivity() {
+  const el = document.getElementById('recentActivity');
+  const items = db.activity.slice(0, 5);
+  if (!items.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">No activity yet</div></div>'; return; }
+  el.innerHTML = items.map(a => `<div class="activity-item">
+    <div class="activity-dot ${a.dir}"></div>
+    <div class="activity-info">
+      <div class="activity-name">${a.name}</div>
+      <div class="activity-meta">${a.date} · ${a.type}</div>
+    </div>
+    <div class="activity-val ${a.dir === 'buy' ? 'td-pos' : 'td-neg'}">${a.dir === 'buy' ? '+' : '-'}${fmt(a.val)}</div>
+  </div>`).join('');
+}
+
+// ===================== IMPORT / EXPORT =====================
+function exportData() {
+  const json = JSON.stringify(db, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `wealthlens-backup-${today()}.json`; a.click();
+  URL.revokeObjectURL(url);
+  toast('Portfolio exported');
+}
+function importData() { document.getElementById('importInput').click(); }
+function handleImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!confirm('This will overwrite your current data. Continue?')) return;
+      db = data;
+      if (!db.globalPrices) db.globalPrices = { gold: 0, silver: 0 };
+      if (!db.mfNavs) db.mfNavs = {};
+      if (!db.activity) db.activity = [];
+      save(); navigate('dashboard');
+      toast('Portfolio imported successfully');
+    } catch { toast('Invalid file', 'error'); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+function resetData() {
+  if (!confirm('Reset ALL portfolio data? This cannot be undone.')) return;
+  db = { stocks: [], metals: [], mf: [], realized: [], globalPrices: { gold: 0, silver: 0 }, mfNavs: {}, activity: [] };
+  save(); navigate('dashboard'); toast('All data reset');
+}
+
+// ===================== INIT =====================
+window.onload = () => {
+  load();
+  refreshDashboard();
+  document.getElementById('m-date').value = today();
+  document.getElementById('mf-date').value = today();
+  restoreGlobalPrices();
+  // Auto-fetch live prices for existing stocks on startup
+  if (db.stocks.length) {
+    setTimeout(() => fetchAllPrices(), 800);
+  }
+};
+</script>
+</body>
+</html>
