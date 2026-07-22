@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fayas07m-web.github.io/Fayas.portfolio/sitemap.xml
