@@ -53,7 +53,7 @@
     "US CMA"
   ],
   "sameAs":[
-    "https://www.linkedin.com/in/fayas-m-srm/",
+    "https://www.linkedin.com/in/fayas07m/",
     "https://github.com/fayas07m-web"
   ]
 }
@@ -266,6 +266,8 @@ nav.sc{background:rgba(5,11,22,.93);box-shadow:0 4px 30px rgba(0,0,0,.4)}
    ============================================================ */
 .cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:22px}
 .cert-card{padding:26px;border-radius:var(--r3);background:var(--bgc);border:1px solid var(--bdr);transition:var(--tr);position:relative;overflow:hidden}
+.cert-image{display:block;width:100%;height:170px;border-radius:var(--r2);overflow:hidden;margin-bottom:18px;background:var(--bg2);border:1px solid var(--bdr)}
+.cert-image img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
 .cert-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));transform:scaleX(0);transition:transform .4s;transform-origin:left}
 .cert-card:hover::before{transform:scaleX(1)}
 .cert-card:hover{border-color:var(--bdrg);background:var(--bgch);box-shadow:var(--sh);transform:translateY(-5px)}
@@ -464,6 +466,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
     <li><a href="#" onclick="showPage('certs')" data-page="certs">Certifications</a></li>
     <li><a href="#" onclick="showPage('education')" data-page="education">Education</a></li>
     <li><a href="#" onclick="showPage('projects')" data-page="projects">Projects</a></li>
+    <li><a href="#" onclick="showPage('experience')" data-page="experience">Experience</a></li>
     <li><a href="#" onclick="showPage('resume')" data-page="resume">Resume</a></li>
     <li><a href="#" onclick="showPage('contact')" data-page="contact" class="n-cta">Contact</a></li>
   </ul>
@@ -503,7 +506,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
         </a>
       </div>
       <div class="h-soc">
-        <a class="hsb" href="https://www.linkedin.com/in/fayas-m-srm/" title="LinkedIn">
+        <a class="hsb" href="https://www.linkedin.com/in/fayas07m/" title="LinkedIn">
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
         </a>
         <a class="hsb" href="https://github.com/fayas07m-web" title="GitHub">
@@ -514,10 +517,10 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
         </a>
       </div>
       <div class="stats-r stg rv">
-        <div class="si rv"><span class="sn" data-count="8">0</span><span class="sl2">Certifications</span></div>
-        <div class="si rv"><span class="sn" data-count="6">0</span><span class="sl2">Projects</span></div>
+        <div class="si rv"><span class="sn" data-count="14">0</span><span class="sl2">Certifications</span></div>
+        <div class="si rv"><span class="sn" data-count="5">0</span><span class="sl2">Projects</span></div>
         <div class="si rv"><span class="sn" data-count="10">0</span><span class="sl2">Tech Skills</span></div>
-        <div class="si rv"><span class="sn" data-count="2">0</span><span class="sl2">Years Study</span></div>
+        <div class="si rv"><span class="sn" data-count="3">0</span><span class="sl2">Years Study</span></div>
       </div>
     </div>
     <!-- Right -->
@@ -563,7 +566,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
     <div class="sh rl">
       <div class="sl">Who I Am</div>
       <h2 class="st">About <span>Me</span></h2>
-      <p class="ss">A passionate finance-tech professional combining accounting fundamentals with modern technology skills.</p>
+      <p class="ss">I enjoy combining finance and accounting with technology to build practical, useful solutions.</p>
     </div>
     <div class="ab-grid">
       <!-- Left -->
@@ -573,9 +576,9 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
           <div class="orb ob" style="width:150px;height:150px;top:-30px;right:-30px;opacity:.5"></div>
         </div>
         <div class="ab-qs">
-          <div><div class="aqs-n">8.4</div><div class="aqs-l">CGPA</div></div>
+          <div><div class="aqs-n">8.99</div><div class="aqs-l">CGPA</div></div>
           <div><div class="aqs-n">US CMA</div><div class="aqs-l">Pursuing</div></div>
-          <div><div class="aqs-n">8+</div><div class="aqs-l">Certifications</div></div>
+          <div><div class="aqs-n">14</div><div class="aqs-l">Certifications</div></div>
         </div>
       </div>
       <!-- Right -->
@@ -608,7 +611,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
               <div class="tl-d">2023 – 2024</div>
               <div class="tl-t">Higher Secondary Education (XII)</div>
               <div class="tl-s">Commerce with Computer Application</div>
-              <div class="tl-p">building a strong foundation in Accountancy, Business Studies, and Economics.</div>
+              <div class="tl-p">Built a strong foundation in Accountancy, Business Studies, Economics, and Computer Applications.</div>
             </div>
           </div>
         </div>
@@ -687,252 +690,112 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
     <div class="sh rv">
       <div class="sl">Credentials</div>
       <h2 class="st">My <span>Certifications</span></h2>
-      <p class="ss">Industry-recognized certifications demonstrating commitment to continuous learning and professional development.</p>
+      <p class="ss">A growing collection of certifications that reflect my interest in finance, technology, analytics, and continuous learning.</p>
     </div>
     <div class="cert-grid stg">
       <div class="cert-card rv">
-
-    <!-- Certificate Image -->
-    <a href="cert1.png" target="_blank" class="cert-image">
-        <img src="cert1.png" alt="Python for Beginners Certificate">
-    </a>
-
-    <!-- Provider -->
-    <div class="cir">
-        <div class="cin">SIMPLILEARN</div>
-    </div>
-
-    <!-- Certificate Title -->
-    <div class="ct">
-        Python for Beginners
-    </div>
-
-    <!-- Description -->
-    <div class="cd">
-        Comprehensive introduction to Python programming covering syntax,
-        data structures, functions, and object-oriented programming fundamentals.
-    </div>
-
-    <!-- Bottom -->
-    <div class="cf">
-        <div class="cdate">2025</div>
-
-        <a href="cert1.png"
-           target="_blank"
-           class="cbadge">
-            View Certificate
-        </a>
-    </div>
-
-</div>
-     <!-- Data Analysis with Python -->
-<div class="cert-card rv">
-
-    <a href="cert2.png" target="_blank" class="cert-image">
-        <img src="cert2.png" alt="Data Analysis with Python Certificate">
-    </a>
-
-    <div class="cir">
-        <div class="cin">freeCodeCamp</div>
-    </div>
-
-    <div class="ct">Data Analysis with Python</div>
-
-    <div class="cd">
-        Data manipulation using Pandas and NumPy, statistical analysis,
-        and data visualization techniques with Matplotlib and Seaborn.
-    </div>
-
-    <div class="cf">
-        <div class="cdate">2025</div>
-        <a href="cert2.png" target="_blank" class="cbadge">
-            View Certificate
-        </a>
-    </div>
-
-</div>
-
-<!-- Responsive Web Design -->
-<div class="cert-card rv">
-
-    <a href="cert3.png" target="_blank" class="cert-image">
-        <img src="cert3.png" alt="Responsive Web Design Certificate">
-    </a>
-
-    <div class="cir">
-        <div class="cin">freeCodeCamp</div>
-    </div>
-
-    <div class="ct">Responsive Web Design</div>
-
-    <div class="cd">
-        Modern CSS layout techniques, responsive design principles,
-        Flexbox, CSS Grid, and accessibility standards for web applications.
-    </div>
-
-    <div class="cf">
-        <div class="cdate">2025</div>
-        <a href="cert3.png" target="_blank" class="cbadge">
-            View Certificate
-        </a>
-    </div>
-
-</div>
-
-<!-- Cisco -->
-<div class="cert-card rv">
-
-    <a href="cert4.png" target="_blank" class="cert-image">
-        <img src="cert4.png" alt="Cisco Cybersecurity Certificate">
-    </a>
-
-    <div class="cir">
-        <div class="cin">Cisco</div>
-    </div>
-
-    <div class="ct">Introduction to Cybersecurity</div>
-
-    <div class="cd">
-        Foundational cybersecurity concepts including network security,
-        cryptography, threat detection, and data protection best practices.
-    </div>
-
-    <div class="cf">
-        <div class="cdate">2025</div>
-        <a href="cert4.png" target="_blank" class="cbadge">
-            View Certificate
-        </a>
-    </div>
-
-</div>
-
-<!-- IBM -->
-<div class="cert-card rv">
-
-    <a href="cert5.png" target="_blank" class="cert-image">
-        <img src="cert5.png" alt="IBM AI Certificate">
-    </a>
-
-    <div class="cir">
-        <div class="cin">IBM CognitiveClass</div>
-    </div>
-
-    <div class="ct">Introduction Cognos Analytics</div>
-
-    <div class="cd">
-        Core concepts of artificial intelligence and machine learning,
-        including supervised learning, neural networks, and real-world AI applications.
-    </div>
-
-    <div class="cf">
-        <div class="cdate">2025</div>
-        <a href="cert5.png" target="_blank" class="cbadge">
-            View Certificate
-        </a>
-    </div>
-
-</div>
-<!-- IBM CognitiveClass -->
-<div class="cert-card rv">
-
-    <a href="cert6.png" target="_blank" class="cert-image">
-        <img src="cert6.png"
-             alt="Data Science Methodology Certificate">
-    </a>
-
-    <div class="cir">
-        <div class="cin">IBM COGNITIVECLASS</div>
-    </div>
-
-    <div class="ct">
-        Data Science Methodology
-    </div>
-
-    <div class="cd">
-        Successfully completed the IBM CognitiveClass course covering the
-        complete Data Science methodology including business understanding,
-        data collection, data preparation, modeling, evaluation, and deployment.
-    </div>
-
-    <div class="cf">
-        <div class="cdate">
-            September 2025
-        </div>
-
-        <a href="cert6.png"
-           target="_blank"
-           class="cbadge">
-            View Certificate
-        </a>
-    </div>
-
-</div> 
-<!-- Google -->
-<div class="cert-card rv">
-
-    <a href="cert7.png" target="_blank" class="cert-image">
-        <img src="cert7.png" alt="Google Digital Marketing Certificate">
-    </a>
-
-    <div class="cir">
-        <div class="cin">Google Skillshop</div>
-    </div>
-
-    <div class="ct">Fundamentals of Digital Marketing</div>
-
-    <div class="cd">
-        Comprehensive digital marketing strategies, SEO, SEM,
-        social media marketing, analytics, and online business growth techniques.
-    </div>
-
-    <div class="cf">
-        <div class="cdate">2025</div>
-        <a href="cert7.png" target="_blank" class="cbadge">
-            View Certificate
-        </a>
-    </div>
-</div>
-<!-- Microsoft / Simplilearn -->
-<div class="cert-card rv">
-
-    <a href="cert8.png" target="_blank" class="cert-image">
-        <img src="cert8.png"
-             alt="Introduction to MS Excel Certificate">
-    </a>
-
-    <div class="cir">
-        <div class="cin">MICROSOFT × SIMPLILEARN</div>
-    </div>
-
-    <div class="ct">
-        Introduction to MS Excel
-    </div>
-
-    <div class="cd">
-        Successfully completed the Microsoft & Simplilearn SkillUp course
-        covering Microsoft Excel fundamentals including worksheets,
-        formulas, functions, data formatting, sorting, filtering, and
-        basic data analysis.
-    </div>
-
-    <div class="cf">
-        <div class="cdate">
-            January 2026
-        </div>
-
-        <a href="cert8.png"
-           target="_blank"
-           class="cbadge">
-            View Certificate
-        </a>
-    </div>
-
-</div>
-</div>
+        <a href="cert1.png" target="_blank" class="cert-image"><img src="cert1.png" alt="Python for Beginners Certificate"></a>
+        <div class="cir"><div class="cin">SIMPLILEARN</div></div>
+        <div class="ct">Python for Beginners</div>
+        <div class="cd">Comprehensive introduction to Python programming covering syntax, data structures, functions, and object-oriented programming fundamentals.</div>
+        <div class="cf"><div class="cdate">2025</div><a href="cert1.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert2.png" target="_blank" class="cert-image"><img src="cert2.png" alt="Data Analysis with Python Certificate"></a>
+        <div class="cir"><div class="cin">freeCodeCamp</div></div>
+        <div class="ct">Data Analysis with Python</div>
+        <div class="cd">Data manipulation using Pandas and NumPy, statistical analysis, and data visualization techniques with Matplotlib and Seaborn.</div>
+        <div class="cf"><div class="cdate">2025</div><a href="cert2.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert3.png" target="_blank" class="cert-image"><img src="cert3.png" alt="Responsive Web Design Certificate"></a>
+        <div class="cir"><div class="cin">freeCodeCamp</div></div>
+        <div class="ct">Responsive Web Design</div>
+        <div class="cd">Modern CSS layout techniques, responsive design principles, Flexbox, CSS Grid, and accessibility standards for web applications.</div>
+        <div class="cf"><div class="cdate">2025</div><a href="cert3.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert4.png" target="_blank" class="cert-image"><img src="cert4.png" alt="Introduction to Cybersecurity Certificate"></a>
+        <div class="cir"><div class="cin">Cisco</div></div>
+        <div class="ct">Introduction to Cybersecurity</div>
+        <div class="cd">Foundational cybersecurity concepts including network security, cryptography, threat detection, and data protection best practices.</div>
+        <div class="cf"><div class="cdate">2025</div><a href="cert4.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert5.png" target="_blank" class="cert-image"><img src="cert5.png" alt="Introduction to Cognos Analytics Certificate"></a>
+        <div class="cir"><div class="cin">IBM CognitiveClass</div></div>
+        <div class="ct">Introduction to Cognos Analytics</div>
+        <div class="cd">Introduction to Cognos Analytics, including data visualization, dashboards, reporting, and business analytics concepts.</div>
+        <div class="cf"><div class="cdate">2025</div><a href="cert5.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert6.png" target="_blank" class="cert-image"><img src="cert6.png" alt="Data Science Methodology Certificate"></a>
+        <div class="cir"><div class="cin">IBM CognitiveClass</div></div>
+        <div class="ct">Data Science Methodology</div>
+        <div class="cd">Successfully completed the IBM CognitiveClass course covering the complete Data Science methodology including business understanding, data collection, data preparation, modeling, evaluation, and deployment.</div>
+        <div class="cf"><div class="cdate">September 2025</div><a href="cert6.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert7.png" target="_blank" class="cert-image"><img src="cert7.png" alt="Fundamentals of Digital Marketing Certificate"></a>
+        <div class="cir"><div class="cin">Google Skillshop</div></div>
+        <div class="ct">Fundamentals of Digital Marketing</div>
+        <div class="cd">Comprehensive digital marketing strategies, SEO, SEM, social media marketing, analytics, and online business growth techniques.</div>
+        <div class="cf"><div class="cdate">2025</div><a href="cert7.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert8.png" target="_blank" class="cert-image"><img src="cert8.png" alt="Introduction to MS Excel Certificate"></a>
+        <div class="cir"><div class="cin">MICROSOFT × SIMPLILEARN</div></div>
+        <div class="ct">Introduction to MS Excel</div>
+        <div class="cd">Successfully completed the Microsoft &amp; Simplilearn SkillUp course covering Microsoft Excel fundamentals including worksheets, formulas, functions, data formatting, sorting, filtering, and basic data analysis.</div>
+        <div class="cf"><div class="cdate">January 2026</div><a href="cert8.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert9.png" target="_blank" class="cert-image"><img src="cert9.png" alt="Learn Business English Certificate"></a>
+        <div class="cir"><div class="cin">Great Learning</div></div>
+        <div class="ct">Learn Business English</div>
+        <div class="cd">Developed practical English communication skills for professional settings, with a focus on clear workplace communication and business vocabulary.</div>
+        <div class="cf"><div class="cdate">February 2026</div><a href="cert9.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert10.png" target="_blank" class="cert-image"><img src="cert10.png" alt="Using Excel for Finance Certificate"></a>
+        <div class="cir"><div class="cin">Madecraft × Coursera</div></div>
+        <div class="ct">Using Excel for Finance</div>
+        <div class="cd">Built practical Excel skills for financial work, including organizing data, using formulas, and working with finance-focused analysis.</div>
+        <div class="cf"><div class="cdate">August 2026</div><a href="cert10.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert11.png" target="_blank" class="cert-image"><img src="cert11.png" alt="Analyze and Apply Commercial Banking Operations Certificate"></a>
+        <div class="cir"><div class="cin">EDUCBA × Coursera</div></div>
+        <div class="ct">Analyze &amp; Apply Commercial Banking Operations</div>
+        <div class="cd">Explored key commercial banking operations and developed a practical understanding of how banking processes support financial services.</div>
+        <div class="cf"><div class="cdate">August 2026</div><a href="cert11.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert12.png" target="_blank" class="cert-image"><img src="cert12.png" alt="Financial Modeling: Statements, Costs and Forecasts Certificate"></a>
+        <div class="cir"><div class="cin">Coursera</div></div>
+        <div class="ct">Financial Modeling: Statements, Costs &amp; Forecasts</div>
+        <div class="cd">Learned practical financial modeling concepts covering financial statements, cost analysis, forecasting, and structured financial planning.</div>
+        <div class="cf"><div class="cdate">September 2026</div><a href="cert12.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert13.png" target="_blank" class="cert-image"><img src="cert13.png" alt="AI-Driven Financial Planning, Forecasting, and Automation Certificate"></a>
+        <div class="cir"><div class="cin">Coursera</div></div>
+        <div class="ct">AI-Driven Financial Planning, Forecasting, and Automation</div>
+        <div class="cd">Explored how AI can support financial planning, forecasting, automation, and more efficient finance workflows.</div>
+        <div class="cf"><div class="cdate">September 2026</div><a href="cert13.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
+      <div class="cert-card rv">
+        <a href="cert14.png" target="_blank" class="cert-image"><img src="cert14.png" alt="Statistical and Predictive Modeling for Finance Certificate"></a>
+        <div class="cir"><div class="cin">Coursera</div></div>
+        <div class="ct">Statistical and Predictive Modeling for Finance</div>
+        <div class="cd">Built an understanding of statistical and predictive modeling techniques and their use in financial analysis and forecasting.</div>
+        <div class="cf"><div class="cdate">September 2026</div><a href="cert14.png" target="_blank" class="cbadge">View Certificate</a></div>
+      </div>
     </div>
   </div>
 </section>
 </div><!-- /certs -->
+
 
 <!-- ================================================================
      EDUCATION PAGE
@@ -944,7 +807,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
     <div class="sh rv">
       <div class="sl">Academic Journey</div>
       <h2 class="st">My <span>Education</span></h2>
-      <p class="ss">A rigorous academic path combining commerce, technology, and professional finance qualifications.</p>
+      <p class="ss">My academic journey combines commerce, technology, and professional finance studies.</p>
     </div>
     <!-- Main Edu Card -->
     <div class="edu-hero rv">
@@ -995,7 +858,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
             <div class="tl-d">2023 – 2024</div>
             <div class="tl-t">Higher Secondary (XII) — Commerce</div>
             <div class="tl-s">Commerce with Computer Application</div>
-            <div class="tl-p">Studied Accountancy, Business Studies, Economics, and Computer Science. forming a strong foundation for higher studies.</div>
+            <div class="tl-p">Studied Accountancy, Business Studies, Economics, and Computer Science. Built a strong foundation for higher studies.</div>
           </div>
           <div class="tl-item rv">
             <div class="tl-d">2021 – 2022</div>
@@ -1018,11 +881,11 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
           </div>
           <div class="skc rv">
             <div class="sk-nm" style="margin-bottom:8px"><span class="ico">💻</span>Technical Projects</div>
-            <p style="font-size:.8rem;color:var(--t2);line-height:1.7">Completed 3 hands-on projects integrating finance concepts with software development skills.</p>
+            <p style="font-size:.8rem;color:var(--t2);line-height:1.7">Built multiple hands-on projects combining finance concepts with software development skills.</p>
           </div>
           <div class="skc rv">
             <div class="sk-nm" style="margin-bottom:8px"><span class="ico">📜</span>Industry Certifications</div>
-            <p style="font-size:.8rem;color:var(--t2);line-height:1.7">Earned 8+ certifications from Google, Cisco, IBM, freeCodeCamp, and Simplilearn.</p>
+            <p style="font-size:.8rem;color:var(--t2);line-height:1.7">Earned 14 certifications from platforms including Google, Cisco, IBM, freeCodeCamp, Simplilearn, Great Learning, and Coursera.</p>
           </div>
         </div>
       </div>
@@ -1044,227 +907,152 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
     <div class="sh rv">
       <div class="sl">My Work</div>
       <h2 class="st">Featured <span>Projects</span></h2>
-      <p class="ss">A collection of projects blending financial intelligence with modern technology solutions.</p>
+      <p class="ss">Projects I have built while exploring the intersection of finance, technology, and practical problem-solving.</p>
     </div>
     <div class="proj-grid stg">
+
+      <!-- Investment Portfolio Tracker -->
+      <div class="proj-card rv">
+        <div class="proj-img">
+          <img src="investment dashboard.jpeg" alt="Investment Portfolio Tracker Dashboard" style="width:100%;height:100%;object-fit:cover;">
+          <div class="proj-img-ov"></div>
+          <div class="proj-cat"><span class="tag">Finance</span></div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-t">Investment Portfolio Tracker</div>
+          <div class="proj-d">A full-featured online investment portfolio platform built for tracking stocks, mutual funds, digital gold, and silver investments. WealthLens includes portfolio analytics, profit &amp; loss tracking, investment history, interactive charts, notifications, online data storage, user accounts, and a modern finance-focused dashboard.</div>
+          <div class="proj-stack">
+            <span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span><span class="tag">Cloud Storage</span>
+          </div>
+          <div class="proj-act">
+            <a class="btn btn-p btn-sm" href="https://wealthlens.fayas07-m.workers.dev/" target="_blank" rel="noopener">Open WealthLens</a>
+            <a class="btn btn-o btn-sm" href="https://wealthlens.fayas07-m.workers.dev/" target="_blank" rel="noopener">Open Project</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personal Portfolio Website -->
+      <div class="proj-card rv">
+        <div class="proj-img">
+          <img src="personal portfolio1.jpeg" alt="Personal Portfolio Website" style="width:100%;height:100%;object-fit:cover;">
+          <div class="proj-img-ov"></div>
+          <div class="proj-cat"><span class="tag">Web Development</span></div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-t">Personal Portfolio Website</div>
+          <div class="proj-d">My first personal portfolio website built to showcase my education, skills, certifications, projects, and career journey. Designed with a responsive layout and modern user interface, serving as the foundation for my current premium portfolio website.</div>
+          <div class="proj-stack">
+            <span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span><span class="tag">Responsive</span>
+          </div>
+          <div class="proj-act">
+            <a class="btn btn-p btn-sm" href="https://fayas07m-web.github.io/Fayas.portfolio/" target="_blank" rel="noopener">Open Website</a>
+            <a class="btn btn-o btn-sm" href="personal portfolio1.jpeg" target="_blank" rel="noopener">View Preview</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Premium Portfolio Website -->
+      <div class="proj-card rv">
+        <div class="proj-img">
+          <img src="personal portfolio2.jpeg" alt="Premium Portfolio Website" style="width:100%;height:100%;object-fit:cover;">
+          <div class="proj-img-ov"></div>
+          <div class="proj-cat"><span class="tag">Current Project</span></div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-t">Premium Portfolio Website v2</div>
+          <div class="proj-d">My latest personal portfolio website featuring a premium fintech-inspired design with glassmorphism UI, smooth animations, responsive layouts, project showcases, certifications, and an interactive user experience. Built to represent my professional profile and ongoing development journey.</div>
+          <div class="proj-stack">
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Glassmorphism</span>
+          </div>
+          <div class="proj-act">
+            <a class="btn btn-p btn-sm" href="https://fayas07m-web.github.io/Fayas.portfolio/" target="_blank" rel="noopener">Open Current Site</a>
+            <a class="btn btn-o btn-sm" href="https://fayas07m-web.github.io/Fayas.portfolio/" target="_blank" rel="noopener">View Portfolio</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIP Calculator -->
 <div class="proj-card rv">
-
     <div class="proj-img">
-        <img src="investment dashboard.jpeg"
-             alt="Investment Portfolio Tracker Dashboard"
-             style="width:100%;height:100%;object-fit:cover;">
-
-        <div class="proj-img-ov"></div>
-
+        <img src="proj-img.png" alt="SIP Calculator" />
         <div class="proj-cat">
             <span class="tag">Finance</span>
         </div>
     </div>
 
     <div class="proj-body">
-
-        <div class="proj-t">
-            Investment Portfolio Tracker
-        </div>
+        <div class="proj-t">SIP Calculator</div>
 
         <div class="proj-d">
-            A responsive web application that helps users manage and monitor
-            stocks, mutual funds, digital gold, and silver investments.
-            Features include portfolio allocation, profit & loss tracking,
-            investment history, interactive charts, and a modern dashboard.
+            A practical investment calculator designed to help users estimate SIP growth and plan long-term investments. It supports monthly SIP, Step-Up SIP, lump-sum investment, inflation-adjusted value, expected returns, investment duration, and visual wealth growth.
         </div>
 
         <div class="proj-stack">
             <span class="tag">HTML5</span>
             <span class="tag">CSS3</span>
             <span class="tag">JavaScript</span>
-            <span class="tag">LocalStorage</span>
+            <span class="tag">Financial Calculator</span>
         </div>
 
         <div class="proj-act">
-
-            <!-- Change this later to your GitHub link -->
             <a class="btn btn-p btn-sm"
-               href="investment portfolio adv.html"
-               onclick="alert('GitHub repository will be available soon.')">
-                GitHub (Soon)
+               href="https://fayas07m-web.github.io/WealthLens-calculators/"
+               target="_blank"
+               rel="noopener">
+                Open Calculator
             </a>
-
-            <!-- Open the actual HTML project -->
-            <a class="btn btn-o btn-sm"
-               href="investment portfolio adv.html"
-               target="_blank">
-                Open Project
-            </a>
-
         </div>
-
     </div>
-
 </div>
-<div class="proj-card rv">
-
-    <div class="proj-img">
-        <img src="personal portfolio1.jpeg"
-             alt="Personal Portfolio Website"
-             style="width:100%;height:100%;object-fit:cover;">
-
-        <div class="proj-img-ov"></div>
-
-        <div class="proj-cat">
-            <span class="tag">Web Development</span>
-        </div>
-    </div>
-
-    <div class="proj-body">
-
-        <div class="proj-t">
-            Personal Portfolio Website
-        </div>
-
-        <div class="proj-d">
-            My first personal portfolio website built to showcase my
-            education, skills, certifications, projects, and career
-            journey. Designed with a responsive layout and modern user
-            interface, serving as the foundation for my current premium
-            portfolio website.
-        </div>
-
-        <div class="proj-stack">
-            <span class="tag">HTML5</span>
-            <span class="tag">CSS3</span>
-            <span class="tag">JavaScript</span>
-            <span class="tag">Responsive</span>
-        </div>
-
-        <div class="proj-act">
-
-            <a class="btn btn-p btn-sm"
-               href="https://fayas07m-web.github.io/Fayas.portfolio"
-               target="_blank">
-                GitHub
-            </a>
-
-            <a class="btn btn-o btn-sm"
-               href="personal portfolio1.jpeg"
-               target="_blank">
-                View Preview
-            </a>
-
-        </div>
 
     </div>
+  </div>
+</section>
+</div><!-- /projects -->
 
-</div>
-<div class="proj-card rv">
 
-    <div class="proj-img">
-        <img src="personal portfolio2.jpeg"
-             alt="Premium Portfolio Website"
-             style="width:100%;height:100%;object-fit:cover;">
-
-        <div class="proj-img-ov"></div>
-
-        <div class="proj-cat">
-            <span class="tag">Current Project</span>
-        </div>
+<!-- ================================================================
+     EXPERIENCE PAGE
+================================================================ -->
+<div class="pg" id="experience">
+<section class="sec">
+  <div class="orb oc" style="width:400px;height:400px;top:-100px;right:-100px"></div>
+  <div class="con">
+    <div class="sh rv">
+      <div class="sl">Professional Journey</div>
+      <h2 class="st">My <span>Experience</span></h2>
+      <p class="ss">Practical experience gained through an internship in digital marketing.</p>
     </div>
-
-    <div class="proj-body">
-
-        <div class="proj-t">
-            Premium Portfolio Website v2
+    <div class="edu-hero rv" style="background:linear-gradient(135deg,rgba(14,165,233,.07),rgba(99,102,241,.05));margin-bottom:0">
+      <div class="orb ob" style="width:260px;height:260px;right:-70px;top:-70px"></div>
+      <div style="position:relative;z-index:1">
+        <div class="edu-badge">💼 Internship Experience</div>
+        <div class="edu-inst">Digital Marketing Internship</div>
+        <div class="edu-deg">Digital Marketing Intern</div>
+        <div class="edu-meta">
+          <div class="emi">📅 <span>2025</span></div>
+          <div class="emi">📌 <span>Completed</span></div>
         </div>
-
-        <div class="proj-d">
-            My latest personal portfolio website featuring a premium fintech-inspired
-            design with glassmorphism UI, smooth animations, responsive layouts,
-            project showcases, certifications, and an interactive user experience.
-            Built to represent my professional profile and ongoing development journey.
+        <div style="margin-top:22px;max-width:720px;font-size:.88rem;color:var(--t2);line-height:1.85">
+          Completed a Digital Marketing Internship with practical exposure to SEO,
+          content marketing, social media management, campaign optimization, and
+          marketing analytics. The experience also strengthened communication,
+          teamwork, and problem-solving skills through hands-on work.
         </div>
-
-        <div class="proj-stack">
-            <span class="tag">HTML</span>
-            <span class="tag">CSS</span>
-            <span class="tag">JavaScript</span>
-            <span class="tag">Glassmorphism</span>
+        <div class="proj-stack" style="margin-top:20px">
+          <span class="tag">Digital Marketing</span><span class="tag">SEO</span>
+          <span class="tag">Content Marketing</span><span class="tag">Analytics</span>
+          <span class="tag">Social Media</span>
         </div>
-
-        <div class="proj-act">
-
-            <a class="btn btn-p btn-sm"
-               href="#"
-               onclick="alert('This portfolio is currently under development.')">
-                Current project
-            </a>
-
-            <a class="btn btn-o btn-sm"
-               href="index.html"
-               target="_blank">
-                View Portfolio
-            </a>
-
-        </div>
-
-    </div>
-
-</div>
-<div class="proj-card rv">
-
-    <div class="proj-img">
-        <img src="intern1.jpeg" alt="Digital Marketing Internship Certificate">
-        <div class="proj-img-ov"></div>
-
-        <div class="proj-cat">
-            <span class="tag">Internship</span>
-        </div>
-    </div>
-
-    <div class="proj-body">
-
-        <div class="proj-t">
-            Digital Marketing Internship
-        </div>
-
-        <div class="proj-d">
-            Successfully completed a Digital Marketing Internship focused on SEO, content marketing, social media management, campaign optimization, and marketing analytics. Gained practical industry experience while strengthening communication, teamwork, and problem-solving skills.
-        </div>
-
-        <div class="proj-stack">
-            <span class="tag">Digital Marketing</span>
-            <span class="tag">SEO</span>
-            <span class="tag">Content Marketing</span>
-            <span class="tag">Analytics</span>
-            <span class="tag">Social Media</span>
-        </div>
-
-        <div class="proj-act">
-
-            <!-- Internship Certificate -->
-            <a class="btn btn-p btn-sm"
-               href="Fayas Internship Expereince Letter 2025.pdf"
-               target="_blank">
-                View Certificate
-            </a>
-
-            <!-- Internship Details -->
-            <a class="btn btn-o btn-sm"
-               href="Fayas Internship Expereince Letter 2025.pdf">
-                View Details
-            </a>
-
-        </div>
-
-    </div>
-
-</div>
-      
+        <div class="proj-act" style="margin-top:22px">
+          <a class="btn btn-p btn-sm" href="Fayas Internship Expereince Letter 2025.pdf" target="_blank" rel="noopener">View Certificate</a>
         </div>
       </div>
     </div>
   </div>
 </section>
-</div><!-- /projects -->
+</div><!-- /experience -->
+
 
 <!-- ================================================================
      RESUME PAGE
@@ -1277,7 +1065,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
       <div>
         <div class="sl">Curriculum Vitae</div>
         <h2 class="st">My <span>Resume</span></h2>
-        <p class="ss">Detailed overview of my education, skills, and professional journey.</p>
+        <p class="ss">A quick overview of my education, skills, projects, and professional experience.</p>
       </div>
       <a class="btn btn-p rv" href="Fayas  Resume gen1.pdf" download>
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -1285,16 +1073,15 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
       </a>
     </div>
     <div class="res-wrap">
-      <!-- Sidebar -->
       <div class="res-side rv">
         <div class="res-av"><div class="res-av-i">🎓</div></div>
         <div class="res-nm">Fayas M</div>
-        <div class="res-ro">B.Com (CA) · US CMA Candidate<br/>Finance & Technology Professional</div>
+        <div class="res-ro">B.Com (CA) · US CMA Candidate<br/>Finance &amp; Technology Professional</div>
         <div class="rct">
           <div class="rci"><div class="rci-ic">📧</div>fayas07.m@gmail.com</div>
           <div class="rci"><div class="rci-ic">📱</div>+91 9489159628</div>
           <div class="rci"><div class="rci-ic">📍</div>Chengalpattu, Tamil Nadu</div>
-          <div class="rci"><div class="rci-ic">🌐</div>linkedin.com/in/Fayas-m-srm</div>
+          <div class="rci"><div class="rci-ic">🌐</div><a href="https://www.linkedin.com/in/fayas07m/" target="_blank" rel="noopener" style="color:inherit">linkedin.com/in/fayas07m</a></div>
         </div>
         <div class="rst">Core Competencies</div>
         <div class="rsl">
@@ -1306,140 +1093,81 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
         </div>
         <div class="rst">Languages</div>
         <div style="display:flex;flex-direction:column;gap:7px;font-size:.8rem;color:var(--t2)">
-          <span>English — Professional</span>
-          <span>Tamil — Native</span>
+          <span>English — Professional</span><span>Tamil — Native</span>
         </div>
         <div class="rst">Interests</div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:2px">
           <span class="tag">FinTech</span><span class="tag">Data Science</span><span class="tag">Investments</span><span class="tag">Blogging</span>
         </div>
       </div>
-      <!-- Main -->
+
       <div class="res-main rv">
         <div class="res-blk">
           <div class="res-bt">Education</div>
-          <div class="res-item">
-            <div class="res-it-top"><div class="res-it-t">B.Com (Computer Applications)</div><div class="res-it-d">2024–2027</div></div>
-            <div class="res-it-s">SRM Institute of Science and Technology, Kattankulathur</div>
-            <div class="res-it-p">CGPA: 8.99/10.00 · Relevant Coursework: Financial Accounting, Cost Accounting, DBMS, Python, Web Technology, Business Law, E-Commerce, Cloud Computing</div>
-          </div>
-          <div class="res-item">
-            <div class="res-it-top"><div class="res-it-t">US CMA — Certified Management Accountant</div><div class="res-it-d">2026–Present</div></div>
-            <div class="res-it-s">Institute of Management Accountants (IMA), USA</div>
-            <div class="res-it-p">Preparing for Part 1 (Financial Planning, Performance & Analytics) and Part 2 (Strategic Financial Management).</div>
-          </div>
-          <div class="res-item">
-            <div class="res-it-top"><div class="res-it-t">Higher Secondary (XII) — Commerce</div><div class="res-it-d">2023–2024</div></div>
-            <div class="res-it-s">SBSE Board — Commerce with Computer Application</div>
-            <div class="res-it-p"> Accountancy, Business Studies, and Economics. Strong academic foundation for higher studies.</div>
-          </div>
+          <div class="res-item"><div class="res-it-top"><div class="res-it-t">B.Com (Computer Applications)</div><div class="res-it-d">2024–2027</div></div><div class="res-it-s">SRM Institute of Science and Technology, Kattankulathur</div><div class="res-it-p">CGPA: 8.99/10.00 · Relevant Coursework: Financial Accounting, Cost Accounting, DBMS, Python, Web Technology, Business Law, E-Commerce, Cloud Computing</div></div>
+          <div class="res-item"><div class="res-it-top"><div class="res-it-t">US CMA — Certified Management Accountant</div><div class="res-it-d">2026–Present</div></div><div class="res-it-s">Institute of Management Accountants (IMA), USA</div><div class="res-it-p">Preparing for Part 1 (Financial Planning, Performance &amp; Analytics) and Part 2 (Strategic Financial Management).</div></div>
+          <div class="res-item"><div class="res-it-top"><div class="res-it-t">Higher Secondary (XII) — Commerce</div><div class="res-it-d">2023–2024</div></div><div class="res-it-s">State Board — Commerce with Computer Applications</div><div class="res-it-p">Accountancy, Business Studies, and Economics. Strong academic foundation for higher studies.</div></div>
         </div>
+
         <div class="res-blk">
           <div class="res-bt">Key Projects</div>
           <div class="res-item">
-    <div class="res-it-top">
-        <div class="res-it-t">Investment Portfolio Tracker</div>
-        <div class="res-it-d">2026</div>
-    </div>
-
-    <div class="res-it-s">
-        HTML • CSS3 • JavaScript • LocalStorage • Chart.js
-    </div>
-
-    <div class="res-it-p">
-        <ul>
-            <li>Developed a responsive investment portfolio tracker for managing stocks, mutual funds, digital gold, and silver investments.</li>
-
-            <li>Implemented portfolio allocation, profit & loss tracking, investment history, interactive charts, and performance analytics.</li>
-
-            <li>Designed a modern dashboard with persistent data storage using LocalStorage for a seamless offline experience.</li>
-
-            <li>Built a clean, mobile-friendly interface with responsive layouts and interactive financial visualizations.</li>
-        </ul>
-    </div>
-</div>
-         <div class="res-item">
-    <div class="res-it-top">
-        <div class="res-it-t">Personal Portfolio Website</div>
-        <div class="res-it-d">2026</div>
-    </div>
-
-    <div class="res-it-s">
-        HTML • CSS3 • JavaScript • Responsive Design
-    </div>
-
-    <div class="res-it-p">
-        <ul>
-            <li>Designed and developed my first personal portfolio website to showcase education, certifications, projects, and technical skills.</li>
-
-            <li>Created a responsive layout with smooth navigation and modern UI components for desktop and mobile devices.</li>
-
-            <li>Integrated GitHub projects, downloadable resume, certification gallery, and contact information into a single portfolio.</li>
-
-            <li>Published the project on GitHub Pages to establish an online professional presence.</li>
-        </ul>
-    </div>
-</div>
+            <div class="res-it-top"><div class="res-it-t">Investment Portfolio Tracker</div><div class="res-it-d">2026</div></div>
+            <div class="res-it-s">HTML • CSS3 • JavaScript • Cloud Storage • Chart.js</div>
+            <div class="res-it-p"><ul>
+              <li>Developed an online investment portfolio platform for tracking stocks, mutual funds, digital gold, and silver investments.</li>
+              <li>Implemented portfolio allocation, profit &amp; loss tracking, investment history, interactive charts, notifications, and performance analytics.</li>
+              <li>Added online data storage and user accounts for a connected portfolio experience.</li>
+            </ul></div>
+          </div>
           <div class="res-item">
-    <div class="res-it-top">
-        <div class="res-it-t">Premium Portfolio Website v2</div>
-        <div class="res-it-d">2026 (Current)</div>
-    </div>
-
-    <div class="res-it-s">
-        HTML • CSS3 • JavaScript • Glassmorphism UI
-    </div>
-
-    <div class="res-it-p">
-        <ul>
-            <li>Currently developing a premium finance-inspired personal portfolio with modern animations and glassmorphism design.</li>
-
-            <li>Featuring dedicated sections for projects, certifications, education, technical skills, resume, and contact information.</li>
-
-            <li>Focused on responsive layouts, enhanced user experience, and professional branding for recruiters and employers.</li>
-
-            <li>Continuously improving the project by adding new features and real-world projects as they are completed.</li>
-        </ul>
-    </div>
-</div>
+            <div class="res-it-top"><div class="res-it-t">Personal Portfolio Website</div><div class="res-it-d">2026</div></div>
+            <div class="res-it-s">HTML • CSS3 • JavaScript • Responsive Design</div>
+            <div class="res-it-p"><ul>
+              <li>Designed and developed my first personal portfolio website to showcase education, certifications, projects, and technical skills.</li>
+              <li>Created a responsive layout with smooth navigation and modern UI components for desktop and mobile devices.</li>
+              <li>Integrated GitHub projects, downloadable resume, certification gallery, and contact information into a single portfolio.</li>
+              <li>Published the project on GitHub Pages to establish an online professional presence.</li>
+            </ul></div>
+          </div>
+          <div class="res-item">
+            <div class="res-it-top"><div class="res-it-t">Premium Portfolio Website v2</div><div class="res-it-d">2026 (Current)</div></div>
+            <div class="res-it-s">HTML • CSS3 • JavaScript • Glassmorphism UI</div>
+            <div class="res-it-p"><ul>
+              <li>Currently developing a premium finance-inspired personal portfolio with modern animations and glassmorphism design.</li>
+              <li>Featuring dedicated sections for projects, certifications, education, technical skills, resume, and contact information.</li>
+              <li>Focused on responsive layouts, enhanced user experience, and professional branding for recruiters and employers.</li>
+              <li>Continuously improving the project by adding new features and real-world projects as they are completed.</li>
+            </ul></div>
+          </div>
+          <div class="res-item">
+            <div class="res-it-top"><div class="res-it-t">SIP Calculator</div><div class="res-it-d">2026</div></div>
+            <div class="res-it-s">HTML • CSS3 • JavaScript • Financial Calculations</div>
+            <div class="res-it-p"><ul>
+              <li>Developed a web-based SIP calculator for estimating long-term investment growth.</li>
+              <li>Added monthly SIP, Step-Up SIP, lump-sum, inflation-adjusted value, expected return, and investment-period calculations.</li>
+              <li>Created an interactive wealth-growth experience to make investment planning easier to understand.</li>
+            </ul></div>
           </div>
         </div>
+
         <div class="res-blk">
           <div class="res-bt">Certifications</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-            <div class="res-item" style="padding:14px 16px">
-              <div class="res-it-s" style="margin:0;font-size:.78rem">Python for Beginners</div>
-              <div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Simplilearn · 2025</div>
-            </div>
-            <div class="res-item" style="padding:14px 16px">
-              <div class="res-it-s" style="margin:0;font-size:.78rem">Data Analysis with Python</div>
-              <div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">freeCodeCamp · 2025</div>
-            </div>
-            <div class="res-item" style="padding:14px 16px">
-              <div class="res-it-s" style="margin:0;font-size:.78rem">Responsive Web Design</div>
-              <div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">freeCodeCamp · 2025</div>
-            </div>
-            <div class="res-item" style="padding:14px 16px">
-              <div class="res-it-s" style="margin:0;font-size:.78rem">Intro to Cybersecurity</div>
-              <div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Cisco · 2025</div>
-            </div>
-            <div class="res-item" style="padding:14px 16px">
-              <div class="res-it-s" style="margin:0;font-size:.78rem">Introduction to Cognos Analytics</div>
-              <div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">IBM CognitiveClass · 2025</div>
-            </div>
-	      <div class="res-item" style="padding:14px 16px">
-              <div class="res-it-s" style="margin:0;font-size:.78rem">Data Science Methodology</div>
-              <div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">IBM CognitiveClass · 2025</div>
-            </div>
-            <div class="res-item" style="padding:14px 16px">
-              <div class="res-it-s" style="margin:0;font-size:.78rem">Fundamentals of Digital Marketing</div>
-              <div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Google Skillshop · 2025</div>
-		</div>
-		<div class="res-item" style="padding:14px 16px">
-              <div class="res-it-s" style="margin:0;font-size:.78rem">Introduction to MS Excel</div>
-              <div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Simplilearn · 2026</div>
-            </div>
-            </div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Python for Beginners</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Simplilearn · 2025</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Data Analysis with Python</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">freeCodeCamp · 2025</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Responsive Web Design</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">freeCodeCamp · 2025</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Introduction to Cybersecurity</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Cisco · 2025</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Introduction to Cognos Analytics</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">IBM CognitiveClass · 2025</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Data Science Methodology</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">IBM CognitiveClass · September 2025</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Fundamentals of Digital Marketing</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Google Skillshop · 2025</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Introduction to MS Excel</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Microsoft × Simplilearn · January 2026</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Learn Business English</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Great Learning · February 2026</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Using Excel for Finance</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Madecraft × Coursera · August 2026</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Analyze &amp; Apply Commercial Banking Operations</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">EDUCBA × Coursera · August 2026</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Financial Modeling: Statements, Costs &amp; Forecasts</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Coursera · September 2026</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">AI-Driven Financial Planning, Forecasting, and Automation</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Coursera · September 2026</div></div>
+            <div class="res-item" style="padding:14px 16px"><div class="res-it-s" style="margin:0;font-size:.78rem">Statistical and Predictive Modeling for Finance</div><div style="font-size:.72rem;color:var(--tm);font-family:var(--fm)">Coursera · September 2026</div></div>
           </div>
         </div>
       </div>
@@ -1447,6 +1175,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
   </div>
 </section>
 </div><!-- /resume -->
+
 
 <!-- ================================================================
      CONTACT PAGE
@@ -1459,7 +1188,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
     <div class="sh rv" style="text-align:center;max-width:600px;margin:0 auto 60px">
       <div class="sl">Get In Touch</div>
       <h2 class="st">Let's <span>Connect</span></h2>
-      <p class="ss" style="max-width:100%">Whether you're a recruiter, collaborator, or fellow finance-tech enthusiast — I'd love to hear from you.</p>
+      <p class="ss" style="max-width:100%">If you'd like to discuss an opportunity, collaboration, or one of my projects, feel free to get in touch.</p>
     </div>
     <div class="con-grid">
       <!-- Left -->
@@ -1497,7 +1226,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
         <div class="con-soc-r">
           <h4>Find me on</h4>
           <div class="con-socs">
-            <a class="csb" href="https://www.linkedin.com/in/fayas2702/" title="LinkedIn">
+            <a class="csb" href="https://www.linkedin.com/in/fayas07m/" title="LinkedIn">
               <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
             </a>
             <a class="csb" href="https://github.com/fayas07m-web" title="GitHub">
@@ -1559,16 +1288,16 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
     <div class="ft-grid">
       <div class="ft-brand">
         <span class="n-logo">FM<span style="-webkit-text-fill-color:var(--cyan)">.</span></span>
-        <p>Finance meets technology. A B.Com (CA) student and US CMA candidate building the future of financial technology.</p>
+        <p>Finance meets technology. A B.Com (CA) student and US CMA candidate exploring the intersection of finance, technology, and analytics.</p>
         <div class="ft-soc">
-          <a href="#">
+          <a href="https://www.linkedin.com/in/fayas07m/" target="_blank" rel="noopener" title="LinkedIn">
             <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
           </a>
-          <a href="#">
+          <a href="https://github.com/fayas07m-web" target="_blank" rel="noopener" title="GitHub">
             <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
           </a>
-          <a href="#">
-            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          <a href="https://fayas07m-web.github.io/Fayas.portfolio/" target="_blank" rel="noopener" title="Portfolio">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
           </a>
         </div>
       </div>
@@ -1586,6 +1315,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:60px 0 28px
         <h4>More</h4>
         <ul>
           <li><a href="#" onclick="showPage('projects')">Projects</a></li>
+          <li><a href="#" onclick="showPage('experience')">Experience</a></li>
           <li><a href="#" onclick="showPage('resume')">Resume</a></li>
           <li><a href="#" onclick="showPage('contact')">Contact</a></li>
         </ul>
